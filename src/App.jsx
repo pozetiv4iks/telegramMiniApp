@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { WebApp } from '@twa-dev/sdk'
+import WelcomePage from './components/WelcomePage'
 import Header from './components/Header'
 import MainContent from './components/MainContent'
 import Footer from './components/Footer'
@@ -8,6 +9,7 @@ import './App.css'
 function App() {
   const [user, setUser] = useState(null)
   const [isReady, setIsReady] = useState(false)
+  const [showWelcome, setShowWelcome] = useState(true)
 
   useEffect(() => {
     // Инициализация Telegram WebApp
@@ -30,10 +32,26 @@ function App() {
     }
   }, [])
 
+  const handleStartApp = () => {
+    setShowWelcome(false)
+    WebApp.HapticFeedback.notificationOccurred('success')
+  }
+
   if (!isReady) {
     return (
       <div className="app">
-        <div className="loading">Загрузка...</div>
+        <div className="loading">
+          <div className="loading-spinner"></div>
+          <p>Загрузка...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (showWelcome) {
+    return (
+      <div className="app">
+        <WelcomePage user={user} onStart={handleStartApp} />
       </div>
     )
   }
