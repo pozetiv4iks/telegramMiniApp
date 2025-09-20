@@ -318,3 +318,17 @@ input[type="checkbox"]:checked::before {
   color: #000000 !important; /* черная галочка */
 }
 
+/* Стили для полей ввода в форме личной информации */
+.personal-info-input {
+  height: 54px !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  font-size: 16px !important;
+  border-radius: 8px !important;
+}
+
+.personal-info-input::placeholder {
+  text-align: left !important;
+  padding-left: 0px !important;
+}
+

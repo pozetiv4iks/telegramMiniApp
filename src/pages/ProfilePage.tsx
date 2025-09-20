@@ -25,6 +25,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   const [sidebarVisible, setSidebarVisible] = useState(false)
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
   const [personalInfoModalVisible, setPersonalInfoModalVisible] = useState(false)
+  const [emailEditModalVisible, setEmailEditModalVisible] = useState(false)
   const [email, setEmail] = useState('test@gmail.com')
   const [lastName, setLastName] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -53,7 +54,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
 
   const handlePersonalInfoSave = () => {
     setPersonalInfoModalVisible(false)
-    alert('Личная информация сохранена!')
   }
 
   const sidebarContent = (
@@ -230,13 +230,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
 
       {/* Personal Information Modal */}
       {personalInfoModalVisible && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+        <div className="fixed inset-0 z-[100]">
           <div 
             className="absolute inset-0 bg-black bg-opacity-50"
             onClick={() => setPersonalInfoModalVisible(false)}
           ></div>
-          <div className="relative bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
+          <div className="relative bg-gray-800 w-full h-full overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-gray-700">
               <h2 className="text-white text-lg font-semibold">Личная информация</h2>
               <button 
                 onClick={() => setPersonalInfoModalVisible(false)}
@@ -246,14 +246,22 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
               </button>
             </div>
             
-            <div className="space-y-4">
+            <div className="p-6 space-y-4 pb-32">
               {/* Email */}
               <div>
-                <label className="block mb-2 font-medium text-gray-300">Email</label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="font-medium text-gray-300">Email</label>
+                  <button 
+                    onClick={() => setEmailEditModalVisible(true)}
+                    className="text-yellow-400 text-sm hover:text-yellow-300 transition-colors"
+                  >
+                    Edit
+                  </button>
+                </div>
                 <InputText
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                  disabled
+                  className="w-full bg-gray-600 text-gray-400 border-gray-500 cursor-not-allowed personal-info-input"
                 />
               </div>
 
@@ -264,7 +272,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Введите свою фамилию"
-                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400 personal-info-input"
                 />
               </div>
 
@@ -275,7 +283,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="Введите своё имя"
-                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400 personal-info-input"
                 />
               </div>
 
@@ -286,7 +294,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                   value={patronymic}
                   onChange={(e) => setPatronymic(e.target.value)}
                   placeholder="Введите своё отчество"
-                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400 personal-info-input"
                 />
               </div>
 
@@ -297,7 +305,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                   value={passportSeries}
                   onChange={(e) => setPassportSeries(e.target.value)}
                   placeholder="Введите серию паспорта"
-                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400 personal-info-input"
                 />
               </div>
 
@@ -308,7 +316,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                   value={passportNumber}
                   onChange={(e) => setPassportNumber(e.target.value)}
                   placeholder="Введите номер паспорта"
-                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400 personal-info-input"
                 />
               </div>
 
@@ -319,7 +327,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                   value={registrationPlace}
                   onChange={(e) => setRegistrationPlace(e.target.value)}
                   placeholder="Введите место регистрации"
-                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400 personal-info-input"
                 />
               </div>
 
@@ -335,13 +343,43 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                 </span>
               </div>
 
-              {/* Кнопка сохранения */}
+            </div>
+            
+            {/* Кнопка сохранения - фиксированная внизу */}
+            <div className="fixed bottom-0 left-0 right-0 p-6 bg-gray-800 border-t border-gray-700">
               <button 
                 onClick={handlePersonalInfoSave}
-                className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors mt-6"
+                className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
+                style={{ height: '54px' }}
               >
                 Сохранить
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Email Edit Modal */}
+      {emailEditModalVisible && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center">
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() => setEmailEditModalVisible(false)}
+          ></div>
+          <div className="relative bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-white text-lg font-semibold">Изменить Email</h2>
+              <button 
+                onClick={() => setEmailEditModalVisible(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <i className="pi pi-times text-xl"></i>
+              </button>
+            </div>
+            
+            <div className="text-center py-8">
+              <p className="text-gray-300">Модалка для изменения email</p>
+              <p className="text-gray-400 text-sm mt-2">Функциональность будет добавлена позже</p>
             </div>
           </div>
         </div>
