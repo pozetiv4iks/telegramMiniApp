@@ -3,16 +3,16 @@ import { Card } from 'primereact/card'
 import { Avatar } from 'primereact/avatar'
 import Button from '../components/Button'
 import BottomNavigation from '../components/BottomNavigation'
-import { useNavigation } from '../contexts/NavigationContext'
 import '../components/BottomNavigation.css'
 import './Pages.css'
 
 interface HistoryPageProps {
   user: any
+  currentPage: string
+  setCurrentPage: (page: string) => void
 }
 
-const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user }) => {
-  const { currentPage, setCurrentPage } = useNavigation()
+const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, setCurrentPage }) => {
   // Моковые данные для истории
   const historyItems = [
     {

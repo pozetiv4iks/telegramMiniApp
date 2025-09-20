@@ -7,7 +7,6 @@ import Checkbox from '../components/Checkbox'
 import Dropdown from '../components/Dropdown'
 import Sidebar from '../components/Sidebar'
 import BottomNavigation from '../components/BottomNavigation'
-import { useNavigation } from '../contexts/NavigationContext'
 import '../components/BottomNavigation.css'
 import './Pages.css'
 
@@ -21,10 +20,11 @@ interface User {
 
 interface ProfilePageProps {
   user: User | null
+  currentPage: string
+  setCurrentPage: (page: string) => void
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ user }) => {
-  const { currentPage, setCurrentPage } = useNavigation()
+const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrentPage }) => {
   const [sidebarVisible, setSidebarVisible] = useState(false)
   const [notifications, setNotifications] = useState(true)
   const [darkMode, setDarkMode] = useState(false)

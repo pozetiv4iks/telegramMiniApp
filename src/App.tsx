@@ -1,113 +1,75 @@
-import { useEffect, useState } from 'react'
-import WebApp from '@twa-dev/sdk'
-import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
-import HomePage from './pages/HomePage'
-import HistoryPage from './pages/HistoryPage'
-import ProfilePage from './pages/ProfilePage'
-import Toast from './components/Toast'
-import 'primereact/resources/themes/lara-light-blue/theme.css'
-import 'primereact/resources/primereact.min.css'
-import 'primeicons/primeicons.css'
 import './App.css'
 
-interface User {
-  id: number
-  first_name: string
-  last_name?: string
-  username?: string
-  photo_url?: string
-}
-
 function App() {
-  const [user, setUser] = useState<User | null>(null)
-  const [isReady, setIsReady] = useState(false)
-
-  useEffect(() => {
-    // Инициализация Telegram WebApp
-    try {
-      WebApp.ready()
-      WebApp.expand()
-      
-      // Получаем данные пользователя
-      if (WebApp.initDataUnsafe?.user) {
-        setUser(WebApp.initDataUnsafe.user)
-      } else {
-        setUser({
-          id: 123456789,
-          first_name: 'Иван',
-          last_name: 'Петров',
-          username: 'ivan_petrov',
-          photo_url: 'https://via.placeholder.com/150'
-        })
-      }
-      
-      // Настройка темы
-      WebApp.setHeaderColor('#ffffff')
-      WebApp.setBackgroundColor('#ffffff')
-    } catch (error) {
-      console.log('Telegram WebApp not available, using mock data')
-      // Для тестирования создаем мокового пользователя
-      setUser({
-        id: 123456789,
-        first_name: 'Иван',
-        last_name: 'Петров',
-        username: 'ivan_petrov',
-        photo_url: 'https://via.placeholder.com/150'
-      })
-    }
-    
-    // Устанавливаем isReady в true с небольшой задержкой
-    setTimeout(() => {
-      setIsReady(true)
-    }, 100)
-    
-    return () => {
-      try {
-        WebApp.close()
-      } catch (error) {
-        console.log('WebApp.close() not available')
-      }
-    }
-  }, [])
-
-  if (!isReady) {
-    return (
-      <div className="app">
-        <div className="loading">
-          <div className="loading-spinner"></div>
-          <p>Загрузка...</p>
-        </div>
-      </div>
-    )
-  }
+  console.log('App component rendered!')
 
   return (
-    <NavigationProvider>
-      <div className="app">
-        <AppContent user={user} />
-        <Toast />
+    <div style={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <div style={{
+        background: 'white',
+        padding: '40px',
+        borderRadius: '20px',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+        textAlign: 'center',
+        maxWidth: '400px',
+        width: '90%'
+      }}>
+        <h1 style={{ 
+          color: '#333', 
+          marginBottom: '20px',
+          fontSize: '2rem'
+        }}>
+          🎉 Telegram Mini App
+        </h1>
+        
+        <p style={{ 
+          color: '#666', 
+          marginBottom: '30px',
+          fontSize: '1.1rem'
+        }}>
+          Приложение работает!
+        </p>
+        
+        <button 
+          onClick={() => alert('Кнопка работает!')}
+          style={{
+            background: '#667eea',
+            color: 'white',
+            border: 'none',
+            padding: '15px 30px',
+            borderRadius: '10px',
+            fontSize: '1rem',
+            cursor: 'pointer',
+            transition: 'all 0.3s'
+          }}
+          onMouseOver={(e) => (e.target as HTMLButtonElement).style.background = '#5a6fd8'}
+          onMouseOut={(e) => (e.target as HTMLButtonElement).style.background = '#667eea'}
+        >
+          Тестовая кнопка
+        </button>
+        
+        <div style={{ 
+          marginTop: '30px', 
+          padding: '20px', 
+          background: '#f8f9fa', 
+          borderRadius: '10px' 
+        }}>
+          <h3 style={{ color: '#333', marginBottom: '10px' }}>Статус:</h3>
+          <p style={{ color: '#28a745', margin: '5px 0' }}>✅ React работает</p>
+          <p style={{ color: '#28a745', margin: '5px 0' }}>✅ TypeScript работает</p>
+          <p style={{ color: '#28a745', margin: '5px 0' }}>✅ Vite работает</p>
+          <p style={{ color: '#28a745', margin: '5px 0' }}>✅ Стили работают</p>
+        </div>
       </div>
-    </NavigationProvider>
+    </div>
   )
-}
-
-function AppContent({ user }: { user: User | null }) {
-  const { currentPage } = useNavigation()
-
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return <HomePage user={user} />
-      case 'history':
-        return <HistoryPage user={user} />
-      case 'profile':
-        return <ProfilePage user={user} />
-      default:
-        return <HomePage user={user} />
-    }
-  }
-
-  return renderCurrentPage()
 }
 
 export default App

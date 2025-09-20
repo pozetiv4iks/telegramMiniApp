@@ -1,14 +1,7 @@
 import React, { useState } from 'react'
 import { Card } from 'primereact/card'
 import { Avatar } from 'primereact/avatar'
-import Button from '../components/Button'
-import InputText from '../components/InputText'
-import InputNumber from '../components/InputNumber'
-import Checkbox from '../components/Checkbox'
-import Dropdown from '../components/Dropdown'
-import TabView from '../components/TabView'
 import BottomNavigation from '../components/BottomNavigation'
-import { useNavigation } from '../contexts/NavigationContext'
 import '../components/BottomNavigation.css'
 import './Pages.css'
 
@@ -22,14 +15,16 @@ interface User {
 
 interface HomePageProps {
   user: User | null
+  currentPage: string
+  setCurrentPage: (page: string) => void
 }
 
-const HomePage: React.FC<HomePageProps> = ({ user }) => {
-  const { currentPage, setCurrentPage } = useNavigation()
+const HomePage: React.FC<HomePageProps> = ({ user, currentPage, setCurrentPage }) => {
   const [inputValue, setInputValue] = useState('')
   const [numberValue, setNumberValue] = useState<number | null>(null)
   const [checkboxValue, setCheckboxValue] = useState(false)
-  const [dropdownValue, setDropdownValue] = useState(null)
+  const [dropdownValue, setDropdownValue] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState(0)
 
   const dropdownOptions = [
     { label: 'Опция 1', value: 'option1' },
@@ -56,47 +51,52 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
             <h4>Форма ввода</h4>
             <div className="form-group">
               <label>Текстовое поле:</label>
-              <InputText
+              <input
+                type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Введите текст..."
-                className="w-full"
+                className="form-input w-full"
               />
             </div>
             
             <div className="form-group">
               <label>Числовое поле:</label>
-              <InputNumber
-                value={numberValue || undefined}
-                onChange={(e) => setNumberValue(e.value || null)}
+              <input
+                type="number"
+                value={numberValue || ''}
+                onChange={(e) => setNumberValue(e.target.value ? Number(e.target.value) : null)}
                 placeholder="Введите число..."
-                className="w-full"
-                mode="currency"
-                currency="RUB"
-                locale="ru-RU"
+                className="form-input w-full"
               />
             </div>
             
             <div className="form-group">
-              <Checkbox
-                checked={checkboxValue}
-                onChange={(e) => setCheckboxValue(e.checked || false)}
-                label="Согласен с условиями"
-                id="checkbox1"
-              />
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={checkboxValue}
+                  onChange={(e) => setCheckboxValue(e.target.checked)}
+                  className="form-checkbox"
+                />
+                Согласен с условиями
+              </label>
             </div>
             
             <div className="form-group">
               <label>Выпадающий список:</label>
-              <Dropdown
-                value={dropdownValue}
-                onChange={(e) => setDropdownValue(e.value)}
-                options={dropdownOptions}
-                placeholder="Выберите опцию..."
-                className="w-full"
-                filter
-                showClear
-              />
+              <select
+                value={dropdownValue || ''}
+                onChange={(e) => setDropdownValue(e.target.value)}
+                className="form-select w-full"
+              >
+                <option value="">Выберите опцию...</option>
+                {dropdownOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
@@ -136,29 +136,34 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
         <div className="tab-content">
           <h3>Доступные действия</h3>
           <div className="button-group">
-            <Button 
-              label="Основная кнопка" 
-              icon="pi pi-check" 
-              className="w-full"
-            />
-            <Button 
-              label="Вторичная кнопка" 
-              icon="pi pi-star" 
-              severity="secondary"
-              className="w-full"
-            />
-            <Button 
-              label="Успех" 
-              icon="pi pi-check-circle" 
-              severity="success"
-              className="w-full"
-            />
-            <Button 
-              label="Предупреждение" 
-              icon="pi pi-exclamation-triangle" 
-              severity="warning"
-              className="w-full"
-            />
+            <button 
+              className="btn btn-primary w-full"
+              onClick={() => alert('Основная кнопка нажата!')}
+            >
+              <i className="pi pi-check"></i>
+              Основная кнопка
+            </button>
+            <button 
+              className="btn btn-secondary w-full"
+              onClick={() => alert('Вторичная кнопка нажата!')}
+            >
+              <i className="pi pi-star"></i>
+              Вторичная кнопка
+            </button>
+            <button 
+              className="btn btn-success w-full"
+              onClick={() => alert('Успех!')}
+            >
+              <i className="pi pi-check-circle"></i>
+              Успех
+            </button>
+            <button 
+              className="btn btn-warning w-full"
+              onClick={() => alert('Предупреждение!')}
+            >
+              <i className="pi pi-exclamation-triangle"></i>
+              Предупреждение
+            </button>
           </div>
         </div>
       )
@@ -169,6 +174,8 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
     setCurrentPage(item.id)
   }
 
+  console.log('HomePage rendered, tabs:', tabs)
+
   return (
     <div className="home-page">
       <div className="page-content">
@@ -177,10 +184,34 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
           <p>Главная страница с компонентами</p>
         </div>
 
-        <TabView 
-          tabs={tabs}
-          className="main-tabs"
-        />
+        {/* Простой тест */}
+        <div style={{ background: 'lightblue', padding: '20px', margin: '20px', border: '2px solid blue' }}>
+          <h2>Тест: HomePage работает!</h2>
+          <p>Текущая страница: {currentPage}</p>
+          <p>Пользователь: {user ? user.first_name : 'Нет пользователя'}</p>
+          <button onClick={() => alert('Кнопка работает!')}>
+            Тестовая кнопка
+          </button>
+        </div>
+
+        {/* Простой TabView */}
+        <div className="simple-tabview">
+          <div className="tab-headers">
+            {tabs.map((tab, index) => (
+              <button
+                key={index}
+                className={`tab-header ${activeTab === index ? 'active' : ''}`}
+                onClick={() => setActiveTab(index)}
+              >
+                {tab.icon && <i className={tab.icon}></i>}
+                {tab.header}
+              </button>
+            ))}
+          </div>
+          <div className="tab-content">
+            {tabs[activeTab] && tabs[activeTab].content}
+          </div>
+        </div>
       </div>
 
       <BottomNavigation
