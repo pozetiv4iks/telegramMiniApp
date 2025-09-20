@@ -105,8 +105,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
 
   return (
     <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: '#111827' }}>
-      <div className="flex-1 overflow-y-auto" style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}>
-        <div className="p-4 pb-20">
+      <div className="flex-1 overflow-y-auto" style={{ paddingTop: 'env(safe-area-inset-top, 0)', paddingBottom: '110px' }}>
+        <div className="p-4">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-white mb-2">Профиль</h1>
           <p className="text-gray-300 text-sm">Управление настройками</p>
@@ -177,12 +177,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
         </div>
       </div>
 
-      <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0)' }}>
-        <BottomNavigation
-          items={navigationItems}
-          onItemClick={handleNavigationClick}
-        />
-      </div>
+      <BottomNavigation
+        items={navigationItems}
+        onItemClick={handleNavigationClick}
+      />
 
       <Sidebar
         visible={sidebarVisible}
