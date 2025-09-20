@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react'
 import WebApp from '@twa-dev/sdk'
+import { Button } from 'primereact/button'
+import { Card } from 'primereact/card'
+import { Avatar } from 'primereact/avatar'
+import 'primereact/resources/themes/lara-light-blue/theme.css'
+import 'primereact/resources/primereact.min.css'
+import 'primeicons/primeicons.css'
 import './App.css'
 
 interface User {
@@ -73,19 +79,60 @@ function App() {
     )
   }
 
+  const handleButtonClick = () => {
+    try {
+      WebApp.HapticFeedback.notificationOccurred('success')
+      WebApp.showAlert('Кнопка нажата!')
+    } catch (error) {
+      console.log('WebApp methods not available')
+      alert('Кнопка нажата!')
+    }
+  }
+
   return (
     <div className="app">
       <div className="container">
         <h1>Telegram Mini App</h1>
+        
         {user && (
-          <div className="user-info">
-            <h2>Добро пожаловать, {user.first_name}!</h2>
-            <p>ID: {user.id}</p>
-            {user.username && <p>Username: @{user.username}</p>}
-          </div>
+          <Card className="user-card">
+            <div className="user-info">
+              <div className="user-header">
+                <Avatar 
+                  image={user.photo_url} 
+                  icon="pi pi-user" 
+                  size="large" 
+                  shape="circle"
+                />
+                <div className="user-details">
+                  <h2>Добро пожаловать, {user.first_name}!</h2>
+                  <p className="user-id">ID: {user.id}</p>
+                  {user.username && <p className="user-username">@{user.username}</p>}
+                </div>
+              </div>
+            </div>
+          </Card>
         )}
-        <div className="content">
-          <p>Ваше Telegram Mini App готово к работе!</p>
+        
+        <Card className="content-card">
+          <div className="content">
+            <p>Ваше Telegram Mini App готово к работе!</p>
+            <p>Теперь с PrimeReact компонентами</p>
+          </div>
+        </Card>
+
+        <div className="button-group">
+          <Button 
+            label="Тестовая кнопка" 
+            icon="pi pi-check" 
+            onClick={handleButtonClick}
+            className="p-button-primary"
+          />
+          <Button 
+            label="Вторая кнопка" 
+            icon="pi pi-star" 
+            className="p-button-secondary"
+          />
         </div>
       </div>
     </div>
