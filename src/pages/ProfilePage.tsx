@@ -114,7 +114,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
 
         {/* Профиль пользователя */}
         <div className="text-center mb-8">
-          <div className="w-24 h-24 bg-gray-700 rounded-lg mx-auto mb-4 flex items-center justify-center">
+          <div className="w-24 h-24 rounded-lg mx-auto mb-4 flex items-center justify-center">
             <Avatar 
               image={user?.photo_url} 
               icon="pi pi-user" 
