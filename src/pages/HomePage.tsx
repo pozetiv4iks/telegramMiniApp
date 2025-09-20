@@ -139,23 +139,25 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
             ))}
           </div>
 
-          {/* Секция реферальной программы */}
-          <button 
-            onClick={() => setIsReferralModalOpen(true)}
-            className="w-full bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors"
-          >
-            <div className="flex items-center">
-              {/* Иконка друзей */}
-              <div className="w-8 h-8 border-2 border-white rounded-full mr-3 flex items-center justify-center">
-                <i className="pi pi-users text-white text-sm"></i>
+          {/* Секция реферальной программы - показывается только если карточек 2 или меньше */}
+          {cards.length <= 2 && (
+            <button 
+              onClick={() => setIsReferralModalOpen(true)}
+              className="w-full bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors"
+            >
+              <div className="flex items-center">
+                {/* Иконка друзей */}
+                <div className="w-8 h-8 border-2 border-white rounded-full mr-3 flex items-center justify-center">
+                  <i className="pi pi-users text-white text-sm"></i>
+                </div>
+                
+                <div className="flex-1 text-left">
+                  <p className="text-white font-medium">Приглашай друзей и получай бонусы!</p>
+                  <p className="text-gray-300 text-sm mt-1">Твоя персональная ссылка здесь</p>
+                </div>
               </div>
-              
-              <div className="flex-1 text-left">
-                <p className="text-white font-medium">Приглашай друзей и получай бонусы!</p>
-                <p className="text-gray-300 text-sm mt-1">Твоя персональная ссылка здесь</p>
-              </div>
-            </div>
-          </button>
+            </button>
+          )}
 
           {/* Тестовые кнопки */}
           <div className="mt-6 flex gap-2 justify-center">
