@@ -28,8 +28,8 @@ function App() {
       }
       
       // Настройка темы
-      WebApp.setHeaderColor('#1a1a1a')
-      WebApp.setBackgroundColor('#1a1a1a')
+      WebApp.setHeaderColor('#ffffff')
+      WebApp.setBackgroundColor('#ffffff')
     } catch (error) {
       console.log('Telegram WebApp not available, using mock data')
       // Для тестирования создаем мокового пользователя
