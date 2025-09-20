@@ -196,27 +196,40 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
 
           {/* Список карточек */}
           <div className="space-y-4 mb-6">
+            {/* Карточка для добавления новой карты */}
+            <div className="bg-gray-800 rounded-lg p-6">
+              <div className="flex items-center mb-4">
+                {/* Иконка карты */}
+                <div className="w-16 h-10 mr-4 flex items-center justify-center">
+                  <i className="pi pi-credit-card text-gray-400 text-2xl"></i>
+                </div>
+                
+                {/* Информация о карте */}
+                <div className="flex-1">
+                  <h3 className="text-white text-lg font-medium">Виртуальная карта</h3>
+                  <p className="text-gray-300 text-sm">Mastercard</p>
+                  <div className="flex items-center mt-2">
+                    <span className="text-gray-300 text-sm">Стоимость:</span>
+                    <span className="text-white text-xl font-bold ml-2">$10</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Кнопка действия */}
+              <button 
+                onClick={() => alert('Карта выбрана!')}
+                className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
+              >
+                Выбрать карту
+              </button>
+            </div>
+
             {cards.map((card) => (
               <div key={card.id} className="bg-gray-800 rounded-lg p-6">
                 <div className="flex items-center mb-4">
                   {/* Иконка карты */}
-                  <div className="w-16 h-10 border-2 border-white rounded-lg mr-4 flex flex-col justify-between p-2">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-1 bg-white rounded"></div>
-                      <div className="w-2 h-1 bg-white rounded"></div>
-                      <div className="w-2 h-1 bg-white rounded"></div>
-                    </div>
-                    <div className="flex justify-center">
-                      <div className="w-6 h-4 border border-white rounded flex items-center justify-center">
-                        <div className="w-3 h-3 border border-white rounded-full"></div>
-                      </div>
-                    </div>
-                    <div className="flex space-x-1">
-                      <div className="w-1 h-1 bg-white rounded"></div>
-                      <div className="w-1 h-1 bg-white rounded"></div>
-                      <div className="w-1 h-1 bg-white rounded"></div>
-                      <div className="w-1 h-1 bg-white rounded"></div>
-                    </div>
+                  <div className="w-16 h-10 mr-4 flex items-center justify-center">
+                    <i className="pi pi-credit-card text-white text-2xl"></i>
                   </div>
                   
                   {/* Информация о карте */}
@@ -243,7 +256,7 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
           </div>
 
           {/* Секция реферальной программы - показывается только если карточек 2 или меньше */}
-          {cards.length <= 2 && (
+          {cards.length <= 1 && (
             <button 
               onClick={() => setIsReferralModalOpen(true)}
               className="w-full bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors"
