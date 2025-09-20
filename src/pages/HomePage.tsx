@@ -225,7 +225,7 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
                     <p className="text-gray-300 text-sm">{card.brand} •••• {card.last4}</p>
                     <p className="text-gray-400 text-xs">Истекает: {card.expiration_date_short}</p>
                     <div className="flex items-center mt-2">
-                      <span className="text-gray-300 text-sm">Потрачено:</span>
+                      <span className="text-gray-300 text-sm">Баланс:</span>
                       <span className="text-white text-xl font-bold ml-2">${card.spent_amount}</span>
                     </div>
                   </div>
