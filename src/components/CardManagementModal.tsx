@@ -108,9 +108,6 @@ const CardManagementModal: React.FC<CardManagementModalProps> = ({
     }
   }
 
-  const formatCardNumber = (last4: string) => {
-    return `**** ${last4}`
-  }
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end justify-center">
