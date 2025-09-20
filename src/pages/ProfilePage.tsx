@@ -6,6 +6,8 @@ import Checkbox from '../components/Checkbox'
 import Sidebar from '../components/Sidebar'
 import BottomNavigation from '../components/BottomNavigation'
 import ReferralModal from '../components/ReferralModal'
+import Toast from '../components/Toast'
+import { useToast } from '../hooks/useToast'
 
 interface User {
   id: number
@@ -26,6 +28,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
   const [personalInfoModalVisible, setPersonalInfoModalVisible] = useState(false)
   const [emailEditModalVisible, setEmailEditModalVisible] = useState(false)
+  const { toast, showSuccess, showError, showInfo, hideToast } = useToast()
   const [lastName, setLastName] = useState('')
   const [firstName, setFirstName] = useState('')
   const [patronymic, setPatronymic] = useState('')
@@ -53,6 +56,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
 
   const handlePersonalInfoSave = () => {
     setPersonalInfoModalVisible(false)
+    showInfo('Информация сохранена')
+  }
+
+  const handleEmailSave = () => {
+    setEmailEditModalVisible(false)
+    showSuccess('Почта сохранена')
+  }
+
+  const handlePersonalInfoError = () => {
+    showError('Личная информация не сохранена')
   }
 
   const sidebarContent = (
@@ -377,10 +390,26 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
             <div className="text-center py-8">
               <p className="text-gray-300">Модалка для изменения email</p>
               <p className="text-gray-400 text-sm mt-2">Функциональность будет добавлена позже</p>
+              
+              <button 
+                onClick={handleEmailSave}
+                className="mt-4 bg-yellow-400 text-black font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
+              >
+                Сохранить Email
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Toast Notification */}
+      <Toast
+        type={toast.type}
+        message={toast.message}
+        isVisible={toast.isVisible}
+        onClose={hideToast}
+        duration={8000}
+      />
     </div>
   )
 }
