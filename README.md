@@ -1,69 +1,94 @@
-# React + TypeScript + Vite
+# Telegram Mini App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Telegram Mini App built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✅ **Telegram WebApp SDK** - Full integration with Telegram WebApp API
+- ✅ **TypeScript** - Type-safe development
+- ✅ **React 19** - Latest React features
+- ✅ **Vite** - Fast development and building
+- ✅ **Responsive Design** - Mobile-first approach
+- ✅ **Light Theme** - Optimized for Telegram's light theme
+- ✅ **Vercel Ready** - Pre-configured for Vercel deployment
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js 18+ 
+- Yarn package manager
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   yarn install
+   ```
+
+3. Start development server:
+   ```bash
+   yarn dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Building for Production
+
+```bash
+yarn build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Preview Production Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+yarn preview
 ```
+
+## Project Structure
+
+```
+src/
+├── App.tsx          # Main application component
+├── App.css          # Application styles
+├── index.css        # Global styles and Telegram WebApp variables
+├── main.tsx         # Application entry point
+└── assets/          # Static assets
+```
+
+## Telegram WebApp Integration
+
+The app includes:
+
+- **WebApp SDK** - Full Telegram WebApp API integration
+- **User Data** - Automatic user information retrieval
+- **Theme Support** - Light theme optimized for Telegram
+- **Haptic Feedback** - Touch feedback support
+- **Error Handling** - Graceful fallbacks for development
+
+## Deployment
+
+### Vercel
+
+The project is pre-configured for Vercel deployment:
+
+1. Push to GitHub
+2. Connect to Vercel
+3. Deploy automatically
+
+### Manual Deployment
+
+1. Build the project: `yarn build`
+2. Upload the `dist` folder to your hosting provider
+
+## Development
+
+- **Hot Reload** - Changes reflect immediately
+- **TypeScript** - Full type checking
+- **Error Boundaries** - Graceful error handling
+- **Mock Data** - Works without Telegram environment
+
+## License
+
+MIT License
