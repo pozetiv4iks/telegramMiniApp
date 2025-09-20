@@ -4,7 +4,6 @@ import HomePage from './pages/HomePage'
 import HistoryPage from './pages/HistoryPage'
 import ProfilePage from './pages/ProfilePage'
 import BottomNavigation from './components/BottomNavigation'
-import Toast from './components/Toast'
 
 // Моковые данные пользователя для демонстрации (когда Telegram WebApp недоступен)
 const mockUser = {
@@ -102,7 +101,6 @@ function App() {
         items={navigationItems}
         onItemClick={handleNavigationClick}
       />
-      <Toast />
     </div>
   )
 }
