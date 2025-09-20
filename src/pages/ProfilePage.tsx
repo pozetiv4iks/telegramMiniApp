@@ -7,7 +7,6 @@ import Checkbox from '../components/Checkbox'
 import Dropdown from '../components/Dropdown'
 import Sidebar from '../components/Sidebar'
 import BottomNavigation from '../components/BottomNavigation'
-import { HomeIcon, HistoryIcon, ProfileIcon } from '../components/icons'
 
 interface User {
   id: number
@@ -36,9 +35,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   ]
 
   const navigationItems = [
-    { id: 'home', label: 'Главная', icon: <HomeIcon />, path: '/', active: currentPage === 'home' },
-    { id: 'history', label: 'История', icon: <HistoryIcon />, path: '/history', active: currentPage === 'history' },
-    { id: 'profile', label: 'Профиль', icon: <ProfileIcon />, path: '/profile', active: currentPage === 'profile' }
+    { id: 'home', label: 'Главная', icon: 'pi pi-home', path: '/', active: currentPage === 'home' },
+    { id: 'history', label: 'История', icon: 'pi pi-history', path: '/history', active: currentPage === 'history' },
+    { id: 'profile', label: 'Профиль', icon: 'pi pi-user', path: '/profile', active: currentPage === 'profile' }
   ]
 
   const handleNavigationClick = (item: any) => {

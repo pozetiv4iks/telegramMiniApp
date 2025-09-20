@@ -3,6 +3,7 @@ import WebApp from '@twa-dev/sdk'
 import HomePage from './pages/HomePage'
 import HistoryPage from './pages/HistoryPage'
 import ProfilePage from './pages/ProfilePage'
+import BottomNavigation from './components/BottomNavigation'
 import Toast from './components/Toast'
 
 // Моковые данные пользователя для демонстрации (когда Telegram WebApp недоступен)
@@ -57,41 +58,28 @@ function App() {
 
   console.log('App component rendered!', { currentPage, user, isLoading })
 
+  // Элементы навигации
+  const navigationItems = [
+    { id: 'home', label: 'Главная', icon: 'pi pi-home', path: '/', active: currentPage === 'home' },
+    { id: 'history', label: 'История', icon: 'pi pi-history', path: '/history', active: currentPage === 'history' },
+    { id: 'profile', label: 'Профиль', icon: 'pi pi-user', path: '/profile', active: currentPage === 'profile' }
+  ]
+
+  const handleNavigationClick = (item: any) => {
+    setCurrentPage(item.id)
+  }
+
   // Функция для рендера текущей страницы
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'home':
-        return (
-          <HomePage 
-            user={user} 
-            currentPage={currentPage} 
-            setCurrentPage={setCurrentPage} 
-          />
-        )
+        return <HomePage user={user} />
       case 'history':
-        return (
-          <HistoryPage 
-            user={user} 
-            currentPage={currentPage} 
-            setCurrentPage={setCurrentPage} 
-          />
-        )
+        return <HistoryPage user={user} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       case 'profile':
-        return (
-          <ProfilePage 
-            user={user} 
-            currentPage={currentPage} 
-            setCurrentPage={setCurrentPage} 
-          />
-        )
+        return <ProfilePage user={user} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       default:
-        return (
-          <HomePage 
-            user={user} 
-            currentPage={currentPage} 
-            setCurrentPage={setCurrentPage} 
-          />
-        )
+        return <HomePage user={user} />
     }
   }
 
@@ -110,6 +98,10 @@ function App() {
   return (
     <div className="h-screen w-full" style={{ backgroundColor: '#111827' }}>
       {renderCurrentPage()}
+      <BottomNavigation
+        items={navigationItems}
+        onItemClick={handleNavigationClick}
+      />
       <Toast />
     </div>
   )

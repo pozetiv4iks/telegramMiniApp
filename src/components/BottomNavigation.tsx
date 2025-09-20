@@ -3,7 +3,7 @@ import React from 'react'
 interface NavigationItem {
   id: string
   label: string
-  icon: string | React.ReactNode
+  icon: string
   path: string
   active?: boolean
 }
@@ -31,11 +31,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
             >
               <div className="p-tabview-nav-link">
                 <div className="flex flex-col items-center gap-1 p-2">
-                  {typeof item.icon === 'string' ? (
-                    <i className={`${item.icon}`} style={{ fontSize: '1.5rem' }}></i>
-                  ) : (
-                    <div>{item.icon}</div>
-                  )}
+                  <i className={`${item.icon}`} style={{ fontSize: '32px', color: item.active ? '#ffffff' : '#8c8c8c' }}></i>
                   <span className="text-xs font-medium p-tabview-title">{item.label}</span>
                 </div>
               </div>

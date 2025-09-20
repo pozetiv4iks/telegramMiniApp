@@ -99,15 +99,37 @@ div {
 
 .bottom-navigation-tabs .p-tabview-nav-item.p-highlight .p-tabview-nav-link i {
   color: #ffffff !important;
+  font-size: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 /* Неактивные элементы - серый цвет */
-.bottom-navigation-tabs .p-tabview-nav-item .p-tabview-nav-link .p-tabview-title {
+.bottom-navigation-tabs .p-tabview-nav-item:not(.p-highlight) .p-tabview-nav-link .p-tabview-title {
   color: #8c8c8c !important;
 }
 
-.bottom-navigation-tabs .p-tabview-nav-item .p-tabview-nav-link i {
+.bottom-navigation-tabs .p-tabview-nav-item:not(.p-highlight) .p-tabview-nav-link i {
   color: #8c8c8c !important;
+  font-size: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Общие стили для всех иконок */
+.bottom-navigation-tabs .p-tabview-nav-item .p-tabview-nav-link i {
+  font-size: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 /* Убираем черную полосу (home indicator) */
@@ -206,3 +228,4 @@ div {
 .mobile-tabview .p-tabview-nav li .p-tabview-nav-link .p-tabview-nav-icon {
   font-size: 1.25rem !important;
 }
+

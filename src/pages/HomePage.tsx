@@ -1,7 +1,5 @@
 import React from 'react'
 import { Button } from 'primereact/button'
-import BottomNavigation from '../components/BottomNavigation'
-import { HomeIcon, HistoryIcon, ProfileIcon } from '../components/icons'
 import WebApp from '@twa-dev/sdk'
 
 interface User {
@@ -14,20 +12,11 @@ interface User {
 
 interface HomePageProps {
   user: User | null
-  currentPage: string
-  setCurrentPage: (page: string) => void
 }
 
-const HomePage: React.FC<HomePageProps> = ({ currentPage, setCurrentPage }) => {
-  const navigationItems = [
-    { id: 'home', label: 'Главная', icon: <HomeIcon />, path: '/', active: currentPage === 'home' },
-    { id: 'history', label: 'История', icon: <HistoryIcon />, path: '/history', active: currentPage === 'history' },
-    { id: 'profile', label: 'Профиль', icon: <ProfileIcon />, path: '/profile', active: currentPage === 'profile' }
-  ]
-
-  const handleNavigationClick = (item: any) => {
-    setCurrentPage(item.id)
-  }
+const HomePage: React.FC<HomePageProps> = ({ user }) => {
+  // Используем user для отображения имени в заголовке
+  const userName = user?.first_name || 'Пользователь'
 
   // Функция для тестирования Telegram WebApp API
   const testTelegramAPI = () => {
@@ -56,7 +45,7 @@ const HomePage: React.FC<HomePageProps> = ({ currentPage, setCurrentPage }) => {
           {/* Заголовок */}
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-white mb-2">Выберите карту</h1>
-            <p className="text-gray-300 text-sm">Доступные варианты ниже</p>
+            <p className="text-gray-300 text-sm">Добро пожаловать, {userName}!</p>
           </div>
 
           {/* Секция выбора карты */}
@@ -135,13 +124,6 @@ const HomePage: React.FC<HomePageProps> = ({ currentPage, setCurrentPage }) => {
         </div>
       </div>
 
-      {/* Bottom Navigation с учетом safe area */}
-      <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0)' }}>
-        <BottomNavigation
-          items={navigationItems}
-          onItemClick={handleNavigationClick}
-        />
-      </div>
     </div>
   )
 }

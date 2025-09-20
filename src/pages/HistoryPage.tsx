@@ -3,7 +3,6 @@ import { Card } from 'primereact/card'
 import { Avatar } from 'primereact/avatar'
 import Button from '../components/Button'
 import BottomNavigation from '../components/BottomNavigation'
-import { HomeIcon, HistoryIcon, ProfileIcon } from '../components/icons'
 
 interface HistoryPageProps {
   user: any
@@ -53,9 +52,9 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
   ]
 
   const navigationItems = [
-    { id: 'home', label: 'Главная', icon: <HomeIcon />, path: '/', active: currentPage === 'home' },
-    { id: 'history', label: 'История', icon: <HistoryIcon />, path: '/history', active: currentPage === 'history' },
-    { id: 'profile', label: 'Профиль', icon: <ProfileIcon />, path: '/profile', active: currentPage === 'profile' }
+    { id: 'home', label: 'Главная', icon: 'pi pi-home', path: '/', active: currentPage === 'home' },
+    { id: 'history', label: 'История', icon: 'pi pi-history', path: '/history', active: currentPage === 'history' },
+    { id: 'profile', label: 'Профиль', icon: 'pi pi-user', path: '/profile', active: currentPage === 'profile' }
   ]
 
   const handleNavigationClick = (item: any) => {
