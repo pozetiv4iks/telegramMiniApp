@@ -53,10 +53,6 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
           />
         ))}
       </TabView>
-      {/* Home indicator */}
-      <div className="flex justify-center pt-2 pb-1">
-        <div className="w-32 h-1 bg-black rounded-sm"></div>
-      </div>
     </div>
   )
 }
