@@ -6,6 +6,7 @@ import Checkbox from '../components/Checkbox'
 import Sidebar from '../components/Sidebar'
 import BottomNavigation from '../components/BottomNavigation'
 import ReferralModal from '../components/ReferralModal'
+import ReferralStatsModal from '../components/ReferralStatsModal'
 import Toast from '../components/Toast'
 import { useToast } from '../hooks/useToast'
 
@@ -26,6 +27,7 @@ interface ProfilePageProps {
 const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrentPage }) => {
   const [sidebarVisible, setSidebarVisible] = useState(false)
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
+  const [isReferralStatsModalOpen, setIsReferralStatsModalOpen] = useState(false)
   const [personalInfoModalVisible, setPersonalInfoModalVisible] = useState(false)
   const [emailEditModalVisible, setEmailEditModalVisible] = useState(false)
   const { toast, showSuccess, showInfo, hideToast } = useToast()
@@ -50,6 +52,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
 
   const handlePersonalInfoClick = () => {
     setPersonalInfoModalVisible(true)
+  }
+
+  const handleReferralStatsClick = () => {
+    setIsReferralStatsModalOpen(true)
   }
 
  
@@ -187,14 +193,17 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
               </div>
             </div>
             
-            <div className="flex items-center gap-3 p-4">
+            <button 
+              onClick={handleReferralStatsClick}
+              className="w-full flex items-center gap-3 p-4 hover:bg-gray-700 transition-colors"
+            >
               <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
                 <i className="pi pi-chart-bar text-white text-sm"></i>
               </div>
-              <div className="flex-1">
+              <div className="flex-1 text-left">
                 <h4 className="text-white font-medium">Реферальная статистика</h4>
               </div>
-            </div>
+            </button>
           </div>
         </div>
 
@@ -234,6 +243,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
       <ReferralModal 
         isOpen={isReferralModalOpen}
         onClose={() => setIsReferralModalOpen(false)}
+      />
+
+      {/* Referral Stats Modal */}
+      <ReferralStatsModal 
+        isOpen={isReferralStatsModalOpen}
+        onClose={() => setIsReferralStatsModalOpen(false)}
       />
 
       {/* Personal Information Modal */}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import BottomNavigation from '../components/BottomNavigation'
+import { Transaction } from '../types/card'
 
 interface HistoryPageProps {
   user: any
@@ -7,15 +8,6 @@ interface HistoryPageProps {
   setCurrentPage: (page: string) => void
 }
 
-interface Transaction {
-  id: number
-  type: 'success' | 'failed' | 'pending'
-  description: string
-  card: string
-  amount: string
-  time: string
-  date: string
-}
 
 const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, setCurrentPage }) => {
   const [activeFilter, setActiveFilter] = useState('all')
@@ -25,58 +17,214 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
   // Моковые данные транзакций
   const transactions: Transaction[] = [
     {
-      id: 1,
-      type: 'success',
-      description: 'Пополнение баланса',
-      card: 'Карта **** 3456',
-      amount: '+$7',
-      time: '11:30',
-      date: 'Сегодня, 22 августа'
+      vendor_transaction_id: "aa499799-f3c7-46c7-bc7e-91ac09765cb5",
+      created_at: "2025-01-20T11:30:00.000Z",
+      cleared_at: "2025-01-20T11:30:00.000Z",
+      merchant: {
+        name: "Account Top-up",
+        category_code: "",
+        city: "",
+        country: ""
+      },
+      last4: "4242",
+      title: "Test Card 627dc",
+      billing_amount: 128.76,
+      billing_currency: "USD",
+      transaction_amount: 128.76,
+      transaction_currency: "USD",
+      conversion_rate: 1,
+      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627dc",
+      vendor_sub_account_id: null,
+      failure_reason: "",
+      status: "APPROVED",
+      transaction_type: "DEPOSIT",
+      is_credit: true,
+      has_receipt: false,
+      adjustment_type: null,
+      review_status: null,
+      group: "Deposit",
+      total_amount: 128.76,
+      card_id: "79a59b14-23e5-42c8-848c-ff8fa9850b8d"
     },
     {
-      id: 2,
-      type: 'failed',
-      description: 'Пополнение баланса',
-      card: 'Карта **** 3456',
-      amount: '+$7',
-      time: '10:30',
-      date: 'Сегодня, 22 августа'
+      vendor_transaction_id: "bb499799-f3c7-46c7-bc7e-91ac09765cb6",
+      created_at: "2025-01-20T10:30:00.000Z",
+      cleared_at: "2025-01-20T10:30:00.000Z",
+      merchant: {
+        name: "Failed Transaction",
+        category_code: "5999",
+        city: "New York",
+        country: "US"
+      },
+      last4: "1234",
+      title: "Test Card 2",
+      billing_amount: 50.00,
+      billing_currency: "USD",
+      transaction_amount: 50.00,
+      transaction_currency: "USD",
+      conversion_rate: 1,
+      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627dd",
+      vendor_sub_account_id: null,
+      failure_reason: "Insufficient funds",
+      status: "DECLINED",
+      transaction_type: "PURCHASE",
+      is_credit: false,
+      has_receipt: false,
+      adjustment_type: null,
+      review_status: null,
+      group: "Purchase",
+      total_amount: 50.00,
+      card_id: "79a59b14-23e5-42c8-848c-ff8fa9850b8e"
     },
     {
-      id: 3,
-      type: 'pending',
-      description: 'Пополнение баланса',
-      card: 'Карта **** 3456',
-      amount: '+$7',
-      time: '10:30',
-      date: 'Вчера, 21 августа'
+      vendor_transaction_id: "cc499799-f3c7-46c7-bc7e-91ac09765cb7",
+      created_at: "2025-01-19T10:30:00.000Z",
+      cleared_at: null,
+      merchant: {
+        name: "Pending Store",
+        category_code: "5411",
+        city: "Los Angeles",
+        country: "US"
+      },
+      last4: "5678",
+      title: "Test Card 3",
+      billing_amount: 25.50,
+      billing_currency: "USD",
+      transaction_amount: 25.50,
+      transaction_currency: "USD",
+      conversion_rate: 1,
+      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627de",
+      vendor_sub_account_id: null,
+      failure_reason: "",
+      status: "PENDING",
+      transaction_type: "PURCHASE",
+      is_credit: false,
+      has_receipt: true,
+      adjustment_type: null,
+      review_status: null,
+      group: "Purchase",
+      total_amount: 25.50,
+      card_id: "79a59b14-23e5-42c8-848c-ff8fa9850b8f"
     },
     {
-      id: 4,
-      type: 'success',
-      description: 'Списание за покупку',
-      card: 'Карта **** 3456',
-      amount: '-$15',
-      time: '09:15',
-      date: 'Сегодня, 22 августа'
+      vendor_transaction_id: "dd499799-f3c7-46c7-bc7e-91ac09765cb8",
+      created_at: "2025-01-20T09:15:00.000Z",
+      cleared_at: "2025-01-20T09:15:00.000Z",
+      merchant: {
+        name: "Coffee Shop",
+        category_code: "5814",
+        city: "San Francisco",
+        country: "US"
+      },
+      last4: "4242",
+      title: "Test Card 627dc",
+      billing_amount: 15.00,
+      billing_currency: "USD",
+      transaction_amount: 15.00,
+      transaction_currency: "USD",
+      conversion_rate: 1,
+      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627dc",
+      vendor_sub_account_id: null,
+      failure_reason: "",
+      status: "APPROVED",
+      transaction_type: "PURCHASE",
+      is_credit: false,
+      has_receipt: true,
+      adjustment_type: null,
+      review_status: null,
+      group: "Purchase",
+      total_amount: 15.00,
+      card_id: "79a59b14-23e5-42c8-848c-ff8fa9850b8d"
     },
     {
-      id: 5,
-      type: 'failed',
-      description: 'Списание за услуги',
-      card: 'Карта **** 3456',
-      amount: '-$25',
-      time: '08:45',
-      date: 'Вчера, 21 августа'
+      vendor_transaction_id: "ee499799-f3c7-46c7-bc7e-91ac09765cb9",
+      created_at: "2025-01-19T08:45:00.000Z",
+      cleared_at: "2025-01-19T08:45:00.000Z",
+      merchant: {
+        name: "Service Provider",
+        category_code: "7372",
+        city: "Chicago",
+        country: "US"
+      },
+      last4: "1234",
+      title: "Test Card 2",
+      billing_amount: 25.00,
+      billing_currency: "USD",
+      transaction_amount: 25.00,
+      transaction_currency: "USD",
+      conversion_rate: 1,
+      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627dd",
+      vendor_sub_account_id: null,
+      failure_reason: "Card blocked",
+      status: "DECLINED",
+      transaction_type: "PURCHASE",
+      is_credit: false,
+      has_receipt: false,
+      adjustment_type: null,
+      review_status: null,
+      group: "Purchase",
+      total_amount: 25.00,
+      card_id: "79a59b14-23e5-42c8-848c-ff8fa9850b8e"
     },
     {
-      id: 6,
-      type: 'success',
-      description: 'Пополнение с карты',
-      card: 'Карта **** 3456',
-      amount: '+$50',
-      time: '16:20',
-      date: 'Вчера, 21 августа'
+      vendor_transaction_id: "ff499799-f3c7-46c7-bc7e-91ac09765cba",
+      created_at: "2025-01-19T16:20:00.000Z",
+      cleared_at: "2025-01-19T16:20:00.000Z",
+      merchant: {
+        name: "Bank Transfer",
+        category_code: "",
+        city: "",
+        country: ""
+      },
+      last4: "5678",
+      title: "Test Card 3",
+      billing_amount: 50.00,
+      billing_currency: "USD",
+      transaction_amount: 50.00,
+      transaction_currency: "USD",
+      conversion_rate: 1,
+      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627de",
+      vendor_sub_account_id: null,
+      failure_reason: "",
+      status: "APPROVED",
+      transaction_type: "DEPOSIT",
+      is_credit: true,
+      has_receipt: false,
+      adjustment_type: null,
+      review_status: null,
+      group: "Deposit",
+      total_amount: 50.00,
+      card_id: "79a59b14-23e5-42c8-848c-ff8fa9850b8f"
+    },
+    {
+      vendor_transaction_id: "gg499799-f3c7-46c7-bc7e-91ac09765cbb",
+      created_at: "2025-01-18T14:15:00.000Z",
+      cleared_at: "2025-01-18T14:15:00.000Z",
+      merchant: {
+        name: "Online Store",
+        category_code: "5999",
+        city: "Miami",
+        country: "US"
+      },
+      last4: "4242",
+      title: "Test Card 627dc",
+      billing_amount: 75.00,
+      billing_currency: "USD",
+      transaction_amount: 75.00,
+      transaction_currency: "USD",
+      conversion_rate: 1,
+      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627dc",
+      vendor_sub_account_id: null,
+      failure_reason: "Transaction canceled by user",
+      status: "CANCELED",
+      transaction_type: "PURCHASE",
+      is_credit: false,
+      has_receipt: false,
+      adjustment_type: null,
+      review_status: null,
+      group: "Purchase",
+      total_amount: 75.00,
+      card_id: "79a59b14-23e5-42c8-848c-ff8fa9850b8d"
     }
   ]
 
@@ -102,13 +250,15 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
     setShowOperationFilter(false)
   }
 
-  const getStatusIcon = (type: string) => {
-    switch (type) {
-      case 'success':
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'APPROVED':
         return <i className="pi pi-check" style={{ color: '#10b981', fontSize: '16px' }}></i>
-      case 'failed':
+      case 'DECLINED':
         return <i className="pi pi-times" style={{ color: '#ef4444', fontSize: '16px' }}></i>
-      case 'pending':
+      case 'CANCELED':
+        return <i className="pi pi-ban" style={{ color: '#f59e0b', fontSize: '16px' }}></i>
+      case 'PENDING':
         return <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
       default:
         return null
@@ -122,15 +272,15 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
       if (selectedOperation !== 'all') {
         if (selectedOperation === 'income') {
           // Пополнения - только успешные с положительной суммой
-          return transaction.type === 'success' && transaction.amount.startsWith('+')
+          return transaction.status === 'APPROVED' && transaction.is_credit
         }
         if (selectedOperation === 'expense') {
           // Списания - только успешные с отрицательной суммой
-          return transaction.type === 'success' && transaction.amount.startsWith('-')
+          return transaction.status === 'APPROVED' && !transaction.is_credit
         }
         if (selectedOperation === 'failed') {
           // Отклонения - только неуспешные операции
-          return transaction.type === 'failed'
+          return transaction.status === 'DECLINED' || transaction.status === 'CANCELED'
         }
       }
       
@@ -144,13 +294,46 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
     })
   }
 
+  // Вспомогательные функции для работы с датами
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    const today = new Date()
+    const yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate() - 1)
+    
+    if (date.toDateString() === today.toDateString()) {
+      return 'Сегодня'
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      return 'Вчера'
+    } else {
+      return date.toLocaleDateString('ru-RU', { 
+        day: 'numeric', 
+        month: 'long' 
+      })
+    }
+  }
+  
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleTimeString('ru-RU', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    })
+  }
+  
+  const formatAmount = (transaction: Transaction) => {
+    const sign = transaction.is_credit ? '+' : '-'
+    return `${sign}$${transaction.total_amount.toFixed(2)}`
+  }
+
   const filteredTransactions = filterTransactions(transactions)
   
   const groupedTransactions = filteredTransactions.reduce((acc, transaction) => {
-    if (!acc[transaction.date]) {
-      acc[transaction.date] = []
+    const dateKey = formatDate(transaction.created_at)
+    if (!acc[dateKey]) {
+      acc[dateKey] = []
     }
-    acc[transaction.date].push(transaction)
+    acc[dateKey].push(transaction)
     return acc
   }, {} as Record<string, Transaction[]>)
 
@@ -243,20 +426,20 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
             <h3 className="text-gray-400 text-sm font-medium mb-3">{date}</h3>
             <div className="space-y-3">
               {dateTransactions.map((transaction) => (
-                <div key={transaction.id} className="bg-gray-800 rounded-lg p-4">
+                <div key={transaction.vendor_transaction_id} className="bg-gray-800 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 flex items-center justify-center">
-                        {getStatusIcon(transaction.type)}
+                        {getStatusIcon(transaction.status)}
                       </div>
                       <div>
-                        <p className="text-white font-medium">{transaction.description}</p>
-                        <p className="text-gray-400 text-sm">{transaction.card}</p>
+                        <p className="text-white font-medium">{transaction.merchant.name}</p>
+                        <p className="text-gray-400 text-sm">Карта •••• {transaction.last4}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-white font-semibold">{transaction.amount}</p>
-                      <p className="text-gray-400 text-sm">{transaction.time}</p>
+                      <p className="text-white font-semibold">{formatAmount(transaction)}</p>
+                      <p className="text-gray-400 text-sm">{formatTime(transaction.created_at)}</p>
                     </div>
                   </div>
                 </div>
