@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { Card } from 'primereact/card'
 import { Avatar } from 'primereact/avatar'
 import { TabView, TabPanel } from 'primereact/tabview'
+import { Button } from 'primereact/button'
 import BottomNavigation from '../components/BottomNavigation'
 import { HomeIcon, HistoryIcon, ProfileIcon } from '../components/icons'
+import WebApp from '@twa-dev/sdk'
 
 interface User {
   id: number
@@ -176,6 +178,25 @@ const HomePage: React.FC<HomePageProps> = ({ user, currentPage, setCurrentPage }
     setCurrentPage(item.id)
   }
 
+  // Функция для тестирования Telegram WebApp API
+  const testTelegramAPI = () => {
+    try {
+      const userInfo = WebApp.initDataUnsafe?.user
+      const platform = WebApp.platform
+      const version = WebApp.version
+      const theme = WebApp.colorScheme
+      
+      alert(`Telegram WebApp Info:
+Пользователь: ${userInfo ? `${userInfo.first_name} ${userInfo.last_name || ''}` : 'Не определен'}
+Платформа: ${platform}
+Версия: ${version}
+Тема: ${theme}
+Готов: ${WebApp.isExpanded ? 'Да' : 'Нет'}`)
+    } catch (error) {
+      alert('Ошибка при получении данных Telegram WebApp: ' + error)
+    }
+  }
+
   console.log('HomePage rendered, tabs:', tabs)
 
   return (
@@ -188,18 +209,26 @@ const HomePage: React.FC<HomePageProps> = ({ user, currentPage, setCurrentPage }
             <p className="text-gray-600 text-base">Главная страница с компонентами</p>
           </div>
 
-          {/* Простой тест */}
-          <div className="bg-blue-100 p-5 m-5 border-2 border-blue-500 rounded-lg">
-            <h2 className="text-xl font-semibold mb-2">Тест: HomePage работает!</h2>
-            <p className="mb-1">Текущая страница: {currentPage}</p>
-            <p className="mb-3">Пользователь: {user ? user.first_name : 'Нет пользователя'}</p>
-            <button 
-              onClick={() => alert('Кнопка работает!')}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
-            >
-              Тестовая кнопка
-            </button>
-          </div>
+                  {/* Простой тест */}
+                  <div className="bg-blue-100 p-5 m-5 border-2 border-blue-500 rounded-lg">
+                    <h2 className="text-xl font-semibold mb-2">Telegram Mini App</h2>
+                    <p className="mb-1">Текущая страница: {currentPage}</p>
+                    <p className="mb-3">Пользователь: {user ? `${user.first_name} ${user.last_name || ''}` : 'Нет пользователя'}</p>
+                    <div className="flex gap-2">
+                      <Button 
+                        label="Тест Telegram API"
+                        icon="pi pi-telegram"
+                        onClick={testTelegramAPI}
+                        className="p-button-sm"
+                      />
+                      <Button 
+                        label="Обычная кнопка"
+                        icon="pi pi-check"
+                        onClick={() => alert('Кнопка работает!')}
+                        className="p-button-sm p-button-outlined"
+                      />
+                    </div>
+                  </div>
 
           {/* PrimeReact TabView */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">

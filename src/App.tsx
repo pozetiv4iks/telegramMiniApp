@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import WebApp from '@twa-dev/sdk'
 import HomePage from './pages/HomePage'
 import HistoryPage from './pages/HistoryPage'
 import ProfilePage from './pages/ProfilePage'
 import Toast from './components/Toast'
 
-// Моковые данные пользователя для демонстрации
+// Моковые данные пользователя для демонстрации (когда Telegram WebApp недоступен)
 const mockUser = {
   id: 123456789,
-  first_name: undefined as string | undefined,
-  last_name: undefined as string | undefined,
-  username: undefined as string | undefined,
+  first_name: 'Иван',
+  last_name: 'Петров',
+  username: 'ivan_petrov',
   photo_url: undefined as string | undefined
 }
 
@@ -20,24 +20,39 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Инициализация Telegram WebApp
-    WebApp.ready()
-    WebApp.expand()
+    try {
+      // Инициализация Telegram WebApp
+      WebApp.ready()
+      WebApp.expand()
+      
+      // Настройка темы Telegram WebApp
+      WebApp.setHeaderColor('#ffffff')
+      WebApp.setBackgroundColor('#ffffff')
 
-    // Получение данных пользователя из Telegram
-    if (WebApp.initDataUnsafe?.user) {
-      const tgUser = WebApp.initDataUnsafe.user
-      setUser({
-        id: tgUser.id,
-        first_name: tgUser.first_name,
-        last_name: tgUser.last_name,
-        username: tgUser.username,
-        photo_url: tgUser.photo_url
-      })
+      // Получение данных пользователя из Telegram
+      if (WebApp.initDataUnsafe?.user) {
+        const tgUser = WebApp.initDataUnsafe.user
+        setUser({
+          id: tgUser.id,
+          first_name: tgUser.first_name || 'Пользователь',
+          last_name: tgUser.last_name || '',
+          username: tgUser.username || '',
+          photo_url: tgUser.photo_url
+        })
+        console.log('Telegram user data loaded:', tgUser)
+      } else {
+        console.log('Using mock user data (Telegram WebApp not available)')
+      }
+
+      // Настройка кнопки "Назад" для Telegram
+      WebApp.BackButton.hide()
+      
+      setIsLoading(false)
+      console.log('Telegram WebApp initialized successfully!')
+    } catch (error) {
+      console.error('Error initializing Telegram WebApp:', error)
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
-    console.log('Telegram WebApp initialized!', { user: WebApp.initDataUnsafe?.user })
   }, [])
 
   console.log('App component rendered!', { currentPage, user, isLoading })
