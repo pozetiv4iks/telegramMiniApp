@@ -130,14 +130,17 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
         {/* Меню профиля */}
         <div className="mb-6">
           <div className="bg-gray-800 rounded-lg">
-            <div className="flex items-center gap-3 p-4 border-b border-gray-700">
+            <button 
+              onClick={() => setSidebarVisible(true)}
+              className="w-full flex items-center gap-3 p-4 border-b border-gray-700 hover:bg-gray-700 transition-colors"
+            >
               <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
                 <i className="pi pi-user-edit text-white text-sm"></i>
               </div>
-              <div className="flex-1">
+              <div className="flex-1 text-left">
                 <h4 className="text-white font-medium">Личная информация</h4>
               </div>
-            </div>
+            </button>
             
             <div className="flex items-center gap-3 p-4 border-b border-gray-700">
               <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
