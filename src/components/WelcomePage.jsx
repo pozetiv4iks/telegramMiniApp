@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { WebApp } from '@twa-dev/sdk'
-import './WelcomePage.css'
 
 const WelcomePage = ({ user, onStart }) => {
   const [isVisible, setIsVisible] = useState(false)
@@ -8,24 +7,24 @@ const WelcomePage = ({ user, onStart }) => {
 
   const features = [
     {
-      icon: '🚀',
-      title: 'Быстрый старт',
-      description: 'Начните использовать приложение за секунды'
+      icon: '💳',
+      title: 'Управление картами',
+      description: 'Все ваши карты в одном месте'
     },
     {
-      icon: '📱',
-      title: 'Мобильный дизайн',
-      description: 'Оптимизировано для всех устройств'
+      icon: '💸',
+      title: 'Быстрые переводы',
+      description: 'Переводите деньги за секунды'
+    },
+    {
+      icon: '📊',
+      title: 'Аналитика',
+      description: 'Отслеживайте свои расходы'
     },
     {
       icon: '🔒',
       title: 'Безопасность',
-      description: 'Ваши данные защищены'
-    },
-    {
-      icon: '⚡',
-      title: 'Высокая скорость',
-      description: 'Мгновенная работа без задержек'
+      description: 'Ваши деньги под защитой'
     }
   ]
 
@@ -55,99 +54,111 @@ const WelcomePage = ({ user, onStart }) => {
   }
 
   return (
-    <div className={`welcome-page ${isVisible ? 'visible' : ''}`}>
-      <div className="welcome-container">
+    <div className={`min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header с приветствием */}
-        <div className="welcome-header">
-          <div className="app-logo">
-            <div className="logo-icon">📱</div>
-            <h1 className="app-title">Telegram Mini App</h1>
+        <div className="text-center mb-12">
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-green-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+              <span className="text-4xl">💳</span>
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Fintech Wallet</h1>
+            <p className="text-gray-600 text-lg">Ваш персональный финансовый помощник</p>
           </div>
           
           {user && (
-            <div className="user-greeting">
-              <div className="greeting-avatar">
-                <img 
-                  src={user.photo_url} 
-                  alt="User Avatar" 
-                  className="avatar-img"
-                />
-                <div className="avatar-ring"></div>
-              </div>
-              <div className="greeting-text">
-                <h2>Привет, {user.first_name}! 👋</h2>
-                <p>Добро пожаловать в наше приложение</p>
+            <div className="bg-white rounded-2xl p-6 shadow-lg max-w-md mx-auto">
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <img 
+                    src={user.photo_url} 
+                    alt="User Avatar" 
+                    className="w-16 h-16 rounded-full border-4 border-telegram-blue"
+                  />
+                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
+                </div>
+                <div className="text-left">
+                  <h2 className="text-xl font-semibold text-gray-900">Привет, {user.first_name}! 👋</h2>
+                  <p className="text-gray-600">Добро пожаловать в наше приложение</p>
+                </div>
               </div>
             </div>
           )}
         </div>
 
         {/* Основной контент */}
-        <div className="welcome-content">
-          <div className="features-section">
-            <h3>Что вас ждет:</h3>
-            <div className="features-grid">
+        <div className="mb-12">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Что вас ждет:</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {features.map((feature, index) => (
                 <div 
                   key={index}
-                  className={`feature-card ${currentFeature === index ? 'active' : ''}`}
+                  className={`card cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                    currentFeature === index 
+                      ? 'ring-2 ring-telegram-blue bg-blue-50' 
+                      : 'hover:shadow-xl'
+                  }`}
                   onClick={() => handleFeatureClick(index)}
                 >
-                  <div className="feature-icon">{feature.icon}</div>
-                  <h4>{feature.title}</h4>
-                  <p>{feature.description}</p>
+                  <div className="text-4xl mb-3">{feature.icon}</div>
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2">{feature.title}</h4>
+                  <p className="text-gray-600 text-sm">{feature.description}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Статистика */}
-          <div className="stats-section">
-            <div className="stat-item">
-              <div className="stat-number">1000+</div>
-              <div className="stat-label">Пользователей</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">99.9%</div>
-              <div className="stat-label">Время работы</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">24/7</div>
-              <div className="stat-label">Поддержка</div>
+          <div className="bg-white rounded-2xl p-8 shadow-lg">
+            <h3 className="text-2xl font-bold text-gray-900 text-center mb-6">Наши достижения</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="text-center">
+            <div className="text-4xl font-bold text-blue-600 mb-2">50K+</div>
+            <div className="text-gray-600">Пользователей</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-green-600 mb-2">₽2.5M</div>
+            <div className="text-gray-600">Оборот</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-purple-600 mb-2">0%</div>
+            <div className="text-gray-600">Комиссия</div>
+          </div>
             </div>
           </div>
         </div>
 
         {/* Кнопки действий */}
-        <div className="welcome-actions">
+        <div className="text-center space-y-4">
           <button 
-            className="start-button"
+            className="btn-primary text-lg px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
             onClick={handleStart}
           >
-            <span className="button-icon">🚀</span>
-            <span>Начать работу</span>
+            <span className="mr-2">🚀</span>
+            Начать работу
           </button>
           
-          <div className="secondary-actions">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
-              className="info-button"
+              className="btn-secondary"
               onClick={() => WebApp.showAlert('Информация о приложении')}
             >
-              <span>ℹ️</span>
-              <span>Информация</span>
+              <span className="mr-2">ℹ️</span>
+              Информация
             </button>
             <button 
-              className="help-button"
+              className="btn-secondary"
               onClick={() => WebApp.openLink('https://telegram.org')}
             >
-              <span>❓</span>
-              <span>Помощь</span>
+              <span className="mr-2">❓</span>
+              Помощь
             </button>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="welcome-footer">
+        <div className="text-center mt-12 text-gray-500">
           <p>Версия 1.0.0 • Сделано с ❤️ для Telegram</p>
         </div>
       </div>
