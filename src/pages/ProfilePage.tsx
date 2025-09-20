@@ -7,6 +7,7 @@ import Checkbox from '../components/Checkbox'
 import Dropdown from '../components/Dropdown'
 import Sidebar from '../components/Sidebar'
 import BottomNavigation from '../components/BottomNavigation'
+import ReferralModal from '../components/ReferralModal'
 
 interface User {
   id: number
@@ -27,6 +28,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   const [notifications, setNotifications] = useState(true)
   const [darkMode, setDarkMode] = useState(false)
   const [language, setLanguage] = useState('ru')
+  const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
 
   const languageOptions = [
     { label: 'Русский', value: 'ru' },
@@ -49,44 +51,44 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   }
 
   const sidebarContent = (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold text-black mb-6">Редактировать профиль</h2>
+    <div className="p-4 bg-gray-800 h-full">
+      <h2 className="text-2xl font-semibold text-white mb-6">Редактировать профиль</h2>
       
       <div className="mt-6">
         <div className="mb-4">
-          <label className="block mb-2 font-medium text-gray-700">Имя:</label>
+          <label className="block mb-2 font-medium text-gray-300">Имя:</label>
           <InputText
             value={user?.first_name || ''}
             placeholder="Введите имя"
-            className="w-full"
+            className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
           />
         </div>
         
         <div className="mb-4">
-          <label className="block mb-2 font-medium text-gray-700">Фамилия:</label>
+          <label className="block mb-2 font-medium text-gray-300">Фамилия:</label>
           <InputText
             value={user?.last_name || ''}
             placeholder="Введите фамилию"
-            className="w-full"
+            className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
           />
         </div>
         
         <div className="mb-4">
-          <label className="block mb-2 font-medium text-gray-700">Username:</label>
+          <label className="block mb-2 font-medium text-gray-300">Username:</label>
           <InputText
             value={user?.username || ''}
             placeholder="Введите username"
-            className="w-full"
+            className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
           />
         </div>
         
         <div className="mb-4">
-          <label className="block mb-2 font-medium text-gray-700">Язык:</label>
+          <label className="block mb-2 font-medium text-gray-300">Язык:</label>
           <Dropdown
             value={language}
             onChange={(e) => setLanguage(e.value)}
             options={languageOptions}
-            className="w-full"
+            className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
           />
         </div>
       </div>
@@ -95,14 +97,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
         <Button 
           label="Сохранить" 
           icon="pi pi-check"
-          className="w-full"
+          className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
         />
         <Button 
           label="Отмена" 
           icon="pi pi-times"
           severity="secondary"
           outlined
-          className="w-full"
+          className="w-full text-white border-gray-600 hover:bg-gray-700"
           onClick={() => setSidebarVisible(false)}
         />
       </div>
@@ -110,111 +112,75 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   )
 
   return (
-    <div className="h-screen flex flex-col bg-white overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: '#111827' }}>
       <div className="flex-1 overflow-y-auto" style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}>
         <div className="p-4 pb-20">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-black mb-2">Профиль</h1>
-          <p className="text-gray-600 text-base">Управление настройками</p>
+          <h1 className="text-2xl font-bold text-white mb-2">Профиль</h1>
+          <p className="text-gray-300 text-sm">Управление настройками</p>
         </div>
 
         {/* Профиль пользователя */}
-        <Card className="mb-6 shadow-lg border border-gray-200">
-          <div className="flex items-center gap-4">
+        <div className="text-center mb-8">
+          <div className="w-24 h-24 bg-gray-700 rounded-lg mx-auto mb-4 flex items-center justify-center">
             <Avatar 
               image={user?.photo_url} 
               icon="pi pi-user" 
               size="xlarge" 
               shape="circle"
-            />
-            <div className="flex-1">
-              <h2 className="text-xl font-semibold text-black mb-1">{user?.first_name} {user?.last_name}</h2>
-              <p className="text-tg-blue font-medium mb-1">@{user?.username}</p>
-              <p className="text-gray-600 text-sm">ID: {user?.id}</p>
-            </div>
-            <Button 
-              icon="pi pi-pencil"
-              size="small"
-              outlined
-              onClick={handleEditProfile}
+              className="bg-gray-600 text-white"
             />
           </div>
-        </Card>
+          <h2 className="text-white text-lg font-medium">{user?.first_name} {user?.last_name}</h2>
+        </div>
 
-        {/* Настройки */}
-        <Card className="mb-6 shadow-lg border border-gray-200">
-          <h3 className="text-lg font-semibold text-black mb-4">Настройки</h3>
-          
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between py-3 border-b border-gray-100">
-              <div className="flex-1">
-                <h4 className="text-base font-medium text-black mb-1">Уведомления</h4>
-                <p className="text-sm text-gray-600">Получать push-уведомления</p>
+        {/* Меню профиля */}
+        <div className="mb-6">
+          <div className="bg-gray-800 rounded-lg">
+            <div className="flex items-center gap-3 p-4 border-b border-gray-700">
+              <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
+                <i className="pi pi-user-edit text-white text-sm"></i>
               </div>
-              <Checkbox
-                checked={notifications}
-                onChange={(e) => setNotifications(e.target.checked)}
-              />
+              <div className="flex-1">
+                <h4 className="text-white font-medium">Личная информация</h4>
+              </div>
             </div>
             
-            <div className="flex items-center justify-between py-3 border-b border-gray-100">
-              <div className="flex-1">
-                <h4 className="text-base font-medium text-black mb-1">Темная тема</h4>
-                <p className="text-sm text-gray-600">Использовать темную тему</p>
+            <div className="flex items-center gap-3 p-4 border-b border-gray-700">
+              <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
+                <i className="pi pi-phone text-white text-sm"></i>
               </div>
-              <Checkbox
-                checked={darkMode}
-                onChange={(e) => setDarkMode(e.target.checked)}
-              />
+              <div className="flex-1">
+                <h4 className="text-white font-medium">Поддержка</h4>
+              </div>
             </div>
             
-            <div className="flex items-center justify-between py-3">
-              <div className="flex-1">
-                <h4 className="text-base font-medium text-black mb-1">Язык</h4>
-                <p className="text-sm text-gray-600">Выберите язык интерфейса</p>
+            <div className="flex items-center gap-3 p-4">
+              <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
+                <i className="pi pi-chart-bar text-white text-sm"></i>
               </div>
-              <Dropdown
-                value={language}
-                onChange={(e) => setLanguage(e.value)}
-                options={languageOptions}
-                className="min-w-[120px]"
-              />
+              <div className="flex-1">
+                <h4 className="text-white font-medium">Реферальная статистика</h4>
+              </div>
             </div>
           </div>
-        </Card>
+        </div>
 
-        {/* Действия */}
-        <Card className="shadow-lg border border-gray-200">
-          <h3 className="text-lg font-semibold text-black mb-4">Действия</h3>
-          
-          <div className="flex flex-col gap-3">
-            <Button 
-              label="Поделиться приложением" 
-              icon="pi pi-share-alt"
-              outlined
-              className="w-full justify-start"
-            />
-            <Button 
-              label="Скопировать ссылку" 
-              icon="pi pi-copy"
-              outlined
-              className="w-full justify-start"
-            />
-            <Button 
-              label="О приложении" 
-              icon="pi pi-info-circle"
-              outlined
-              className="w-full justify-start"
-            />
-            <Button 
-              label="Выйти" 
-              icon="pi pi-sign-out"
-              severity="danger"
-              outlined
-              className="w-full justify-start"
-            />
+        {/* Реферальная программа */}
+        <button 
+          onClick={() => setIsReferralModalOpen(true)}
+          className="w-full bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+              <i className="pi pi-users text-gray-800 text-lg"></i>
+            </div>
+            <div className="flex-1 text-left">
+              <h4 className="text-white font-medium mb-1">Приглашай друзей и получай бонусы!</h4>
+              <p className="text-gray-400 text-sm">Твоя персональная ссылка здесь</p>
+            </div>
           </div>
-        </Card>
+        </button>
         </div>
       </div>
 
@@ -229,12 +195,19 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
         visible={sidebarVisible}
         onHide={() => setSidebarVisible(false)}
         position="right"
-        className="profile-sidebar"
+        className="w-full md:w-30rem bg-gray-800 text-white"
       >
         {sidebarContent}
       </Sidebar>
+
+      {/* Referral Modal */}
+      <ReferralModal 
+        isOpen={isReferralModalOpen}
+        onClose={() => setIsReferralModalOpen(false)}
+      />
     </div>
   )
 }
 
 export default ProfilePage
+
