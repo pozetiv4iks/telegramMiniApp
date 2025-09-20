@@ -49,11 +49,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
     setPersonalInfoModalVisible(true)
   }
 
-  const handleSave = () => {
-    setSidebarVisible(false)
-    // Здесь можно добавить логику сохранения данных
-    alert('Данные сохранены!')
-  }
+ 
 
   const handlePersonalInfoSave = () => {
     setPersonalInfoModalVisible(false)
@@ -118,6 +114,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
           label="Сохранить" 
           icon="pi pi-check"
           className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
+          onClick={() => {
+            setSidebarVisible(false)
+            alert('Данные сохранены!')
+          }}
         />
         <Button 
           label="Отмена" 
