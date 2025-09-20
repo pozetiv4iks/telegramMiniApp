@@ -55,11 +55,11 @@ const Toast: React.FC<ToastProps> = ({
         }
       case 'info':
         return {
-          container: 'bg-blue-50 border-blue-200',
-          leftBar: 'bg-blue-500',
-          icon: 'pi pi-info-circle',
-          text: 'text-blue-600',
-          closeIcon: 'text-blue-600'
+          container: 'bg-green-50 border-green-200',
+          leftBar: 'bg-green-500',
+          icon: 'pi pi-check',
+          text: 'text-green-600',
+          closeIcon: 'text-green-600'
         }
       default:
         return {
