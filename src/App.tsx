@@ -26,8 +26,8 @@ function App() {
       WebApp.expand()
       
       // Настройка темы Telegram WebApp
-      WebApp.setHeaderColor('#ffffff')
-      WebApp.setBackgroundColor('#ffffff')
+      WebApp.setHeaderColor('#1a1a1a')
+      WebApp.setBackgroundColor('#1a1a1a')
 
       // Получение данных пользователя из Telegram
       if (WebApp.initDataUnsafe?.user) {
@@ -98,17 +98,17 @@ function App() {
   // Экран загрузки
   if (isLoading) {
     return (
-      <div className="h-screen w-full bg-white flex items-center justify-center">
+      <div className="h-screen w-full bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-tg-blue border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Загрузка...</p>
+          <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white font-medium">Загрузка...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="h-screen w-full bg-white">
+    <div className="h-screen w-full bg-gray-900">
       {renderCurrentPage()}
       <Toast />
     </div>

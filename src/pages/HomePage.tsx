@@ -1,7 +1,4 @@
-import React, { useState } from 'react'
-import { Card } from 'primereact/card'
-import { Avatar } from 'primereact/avatar'
-import { TabView, TabPanel } from 'primereact/tabview'
+import React from 'react'
 import { Button } from 'primereact/button'
 import BottomNavigation from '../components/BottomNavigation'
 import { HomeIcon, HistoryIcon, ProfileIcon } from '../components/icons'
@@ -21,157 +18,11 @@ interface HomePageProps {
   setCurrentPage: (page: string) => void
 }
 
-const HomePage: React.FC<HomePageProps> = ({ user, currentPage, setCurrentPage }) => {
-  const [inputValue, setInputValue] = useState('')
-  const [numberValue, setNumberValue] = useState<number | null>(null)
-  const [checkboxValue, setCheckboxValue] = useState(false)
-  const [dropdownValue, setDropdownValue] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState(0)
-
-  const dropdownOptions = [
-    { label: 'Опция 1', value: 'option1' },
-    { label: 'Опция 2', value: 'option2' },
-    { label: 'Опция 3', value: 'option3' }
-  ]
-
+const HomePage: React.FC<HomePageProps> = ({ currentPage, setCurrentPage }) => {
   const navigationItems = [
     { id: 'home', label: 'Главная', icon: <HomeIcon />, path: '/', active: currentPage === 'home' },
     { id: 'history', label: 'История', icon: <HistoryIcon />, path: '/history', active: currentPage === 'history' },
     { id: 'profile', label: 'Профиль', icon: <ProfileIcon />, path: '/profile', active: currentPage === 'profile' }
-  ]
-
-  const tabs = [
-    {
-      header: 'Основная информация',
-      leftIcon: 'pi pi-info-circle',
-      content: (
-        <div>
-          <h3 className="text-xl font-semibold mb-3">Добро пожаловать в Telegram Mini App!</h3>
-          <p className="text-gray-600 mb-6">Это главная страница с различными компонентами PrimeReact.</p>
-          
-          <div className="mt-6">
-            <h4 className="text-lg font-medium mb-4">Форма ввода</h4>
-            <div className="space-y-4">
-              <div>
-                <label className="block mb-2 font-medium text-gray-700">Текстовое поле:</label>
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Введите текст..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg text-base transition-colors focus:outline-none focus:border-tg-blue focus:ring-2 focus:ring-tg-blue/10"
-                />
-              </div>
-              
-              <div>
-                <label className="block mb-2 font-medium text-gray-700">Числовое поле:</label>
-                <input
-                  type="number"
-                  value={numberValue || ''}
-                  onChange={(e) => setNumberValue(e.target.value ? Number(e.target.value) : null)}
-                  placeholder="Введите число..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg text-base transition-colors focus:outline-none focus:border-tg-blue focus:ring-2 focus:ring-tg-blue/10"
-                />
-              </div>
-              
-              <div>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={checkboxValue}
-                    onChange={(e) => setCheckboxValue(e.target.checked)}
-                    className="w-5 h-5 text-tg-blue bg-white border-gray-300 rounded focus:ring-tg-blue focus:ring-2"
-                  />
-                  <span className="text-sm font-medium text-gray-700">Согласен с условиями</span>
-                </label>
-              </div>
-              
-              <div>
-                <label className="block mb-2 font-medium text-gray-700">Выпадающий список:</label>
-                <select
-                  value={dropdownValue || ''}
-                  onChange={(e) => setDropdownValue(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg text-base transition-colors focus:outline-none focus:border-tg-blue focus:ring-2 focus:ring-tg-blue/10"
-                >
-                  <option value="">Выберите опцию...</option>
-                  {dropdownOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      header: 'Пользователь',
-      leftIcon: 'pi pi-user',
-      content: (
-        <div>
-          {user && (
-            <Card className="mb-6 shadow-lg border border-gray-200">
-              <div className="p-0">
-                <div className="flex items-center gap-4">
-                  <Avatar 
-                    image={user.photo_url} 
-                    icon="pi pi-user" 
-                    size="xlarge" 
-                    shape="circle"
-                  />
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-semibold text-black mb-2">{user.first_name} {user.last_name}</h2>
-                    <p className="font-mono bg-gray-100 px-2 py-1 rounded text-sm inline-block mb-1">ID: {user.id}</p>
-                    {user.username && <p className="text-tg-blue font-medium">@{user.username}</p>}
-                  </div>
-                </div>
-              </div>
-            </Card>
-          )}
-        </div>
-      )
-    },
-    {
-      header: 'Действия',
-      leftIcon: 'pi pi-cog',
-      content: (
-        <div>
-          <h3 className="text-xl font-semibold mb-6">Доступные действия</h3>
-          <div className="flex flex-col gap-4">
-            <button 
-              className="flex items-center justify-center gap-2 px-6 py-3 border-none rounded-lg font-medium cursor-pointer transition-all text-base bg-tg-blue text-white hover:bg-tg-blue-hover"
-              onClick={() => alert('Основная кнопка нажата!')}
-            >
-              <i className="pi pi-check"></i>
-              Основная кнопка
-            </button>
-            <button 
-              className="flex items-center justify-center gap-2 px-6 py-3 border-none rounded-lg font-medium cursor-pointer transition-all text-base bg-gray-600 text-white hover:bg-gray-700"
-              onClick={() => alert('Вторичная кнопка нажата!')}
-            >
-              <i className="pi pi-star"></i>
-              Вторичная кнопка
-            </button>
-            <button 
-              className="flex items-center justify-center gap-2 px-6 py-3 border-none rounded-lg font-medium cursor-pointer transition-all text-base bg-green-500 text-white hover:bg-green-600"
-              onClick={() => alert('Успех!')}
-            >
-              <i className="pi pi-check-circle"></i>
-              Успех
-            </button>
-            <button 
-              className="flex items-center justify-center gap-2 px-6 py-3 border-none rounded-lg font-medium cursor-pointer transition-all text-base bg-yellow-500 text-white hover:bg-yellow-600"
-              onClick={() => alert('Предупреждение!')}
-            >
-              <i className="pi pi-exclamation-triangle"></i>
-              Предупреждение
-            </button>
-          </div>
-        </div>
-      )
-    }
   ]
 
   const handleNavigationClick = (item: any) => {
@@ -197,56 +48,89 @@ const HomePage: React.FC<HomePageProps> = ({ user, currentPage, setCurrentPage }
     }
   }
 
-  console.log('HomePage rendered, tabs:', tabs)
-
   return (
-    <div className="h-screen flex flex-col bg-white overflow-hidden">
+    <div className="h-screen flex flex-col bg-gray-900 overflow-hidden">
       {/* Основной контент с учетом status bar */}
       <div className="flex-1 overflow-y-auto" style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}>
         <div className="p-4 pb-20">
+          {/* Заголовок */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-black mb-2">Telegram Mini App</h1>
-            <p className="text-gray-600 text-base">Главная страница с компонентами</p>
+            <h1 className="text-2xl font-bold text-white mb-2">Выберите карту</h1>
+            <p className="text-gray-300 text-sm">Доступные варианты ниже</p>
           </div>
 
-                  {/* Простой тест */}
-                  <div className="bg-blue-100 p-5 m-5 border-2 border-blue-500 rounded-lg">
-                    <h2 className="text-xl font-semibold mb-2">Telegram Mini App</h2>
-                    <p className="mb-1">Текущая страница: {currentPage}</p>
-                    <p className="mb-3">Пользователь: {user ? `${user.first_name} ${user.last_name || ''}` : 'Нет пользователя'}</p>
-                    <div className="flex gap-2">
-                      <Button 
-                        label="Тест Telegram API"
-                        icon="pi pi-telegram"
-                        onClick={testTelegramAPI}
-                        className="p-button-sm"
-                      />
-                      <Button 
-                        label="Обычная кнопка"
-                        icon="pi pi-check"
-                        onClick={() => alert('Кнопка работает!')}
-                        className="p-button-sm p-button-outlined"
-                      />
-                    </div>
+          {/* Секция выбора карты */}
+          <div className="bg-gray-800 rounded-lg p-6 mb-6">
+            <div className="flex items-center mb-4">
+              {/* Иконка карты */}
+              <div className="w-16 h-10 border-2 border-white rounded-lg mr-4 flex flex-col justify-between p-2">
+                <div className="flex space-x-1">
+                  <div className="w-2 h-1 bg-white rounded"></div>
+                  <div className="w-2 h-1 bg-white rounded"></div>
+                  <div className="w-2 h-1 bg-white rounded"></div>
+                </div>
+                <div className="flex justify-center">
+                  <div className="w-6 h-4 border border-white rounded flex items-center justify-center">
+                    <div className="w-3 h-3 border border-white rounded-full"></div>
                   </div>
-
-          {/* PrimeReact TabView */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <TabView 
-              activeIndex={activeTab} 
-              onTabChange={(e) => setActiveTab(e.index)}
-              className="custom-tabview"
+                </div>
+                <div className="flex space-x-1">
+                  <div className="w-1 h-1 bg-white rounded"></div>
+                  <div className="w-1 h-1 bg-white rounded"></div>
+                  <div className="w-1 h-1 bg-white rounded"></div>
+                  <div className="w-1 h-1 bg-white rounded"></div>
+                </div>
+              </div>
+              
+              {/* Информация о карте */}
+              <div className="flex-1">
+                <h3 className="text-white text-lg font-medium">Виртуальная карта</h3>
+                <p className="text-gray-300 text-sm">Mastercard</p>
+                <div className="flex items-center mt-2">
+                  <span className="text-gray-300 text-sm">Стоимость:</span>
+                  <span className="text-white text-xl font-bold ml-2">$10</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Кнопка выбора карты */}
+            <button 
+              onClick={() => alert('Карта выбрана!')}
+              className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
             >
-              {tabs.map((tab, index) => (
-                <TabPanel
-                  key={index}
-                  header={tab.header}
-                  leftIcon={tab.leftIcon}
-                >
-                  {tab.content}
-                </TabPanel>
-              ))}
-            </TabView>
+              Выбрать карту
+            </button>
+          </div>
+
+          {/* Секция реферальной программы */}
+          <div className="bg-gray-700 rounded-lg p-4">
+            <div className="flex items-center">
+              {/* Иконка друзей */}
+              <div className="w-8 h-8 border-2 border-white rounded-full mr-3 flex items-center justify-center">
+                <i className="pi pi-users text-white text-sm"></i>
+              </div>
+              
+              <div className="flex-1">
+                <p className="text-white font-medium">Приглашай друзей и получай бонусы!</p>
+                <p className="text-gray-300 text-sm mt-1">Твоя персональная ссылка здесь</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Тестовые кнопки */}
+          <div className="mt-6 flex gap-2 justify-center">
+            <Button 
+              label="Telegram API"
+              icon="pi pi-telegram"
+              onClick={testTelegramAPI}
+              className="p-button-sm p-button-outlined p-button-secondary"
+            />
+            <Button 
+              label="Тест"
+              icon="pi pi-check"
+              onClick={() => alert('Кнопка работает!')}
+              className="p-button-sm p-button-secondary"
+            />
           </div>
         </div>
       </div>
