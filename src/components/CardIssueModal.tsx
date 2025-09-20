@@ -3,9 +3,10 @@ import React from 'react'
 interface CardIssueModalProps {
   isOpen: boolean
   onClose: () => void
+  onNext: () => void
 }
 
-const CardIssueModal: React.FC<CardIssueModalProps> = ({ isOpen, onClose }) => {
+const CardIssueModal: React.FC<CardIssueModalProps> = ({ isOpen, onClose, onNext }) => {
   if (!isOpen) return null
 
   return (
@@ -147,8 +148,7 @@ const CardIssueModal: React.FC<CardIssueModalProps> = ({ isOpen, onClose }) => {
         <div className="p-6 border-t border-gray-700" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0) + 120px)' }}>
           <button 
             onClick={() => {
-              alert('Переход к оплате')
-              onClose()
+              onNext()
             }}
             className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors mb-3"
             style={{ height: '54px' }}

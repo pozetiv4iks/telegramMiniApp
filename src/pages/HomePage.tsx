@@ -3,6 +3,9 @@ import { Button } from 'primereact/button'
 import WebApp from '@twa-dev/sdk'
 import ReferralModal from '../components/ReferralModal'
 import CardIssueModal from '../components/CardIssueModal'
+import EmailActivationModal from '../components/EmailActivationModal'
+import CodeConfirmationModal from '../components/CodeConfirmationModal'
+import TopUpModal from '../components/TopUpModal'
 import { Card } from '../types/card'
 
 interface User {
@@ -24,11 +27,19 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
   const userName = user?.first_name || 'Пользователь'
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
   const [isCardIssueModalOpen, setIsCardIssueModalOpen] = useState(false)
+  const [isEmailActivationModalOpen, setIsEmailActivationModalOpen] = useState(false)
+  const [isCodeConfirmationModalOpen, setIsCodeConfirmationModalOpen] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [isUserRegistered, setIsUserRegistered] = useState(false) // Состояние регистрации пользователя
+  const [isTopUpModalOpen, setIsTopUpModalOpen] = useState(false)
   
   // Функция закрытия всех модалок
   const closeAllModals = useCallback(() => {
     setIsReferralModalOpen(false)
     setIsCardIssueModalOpen(false)
+    setIsEmailActivationModalOpen(false)
+    setIsCodeConfirmationModalOpen(false)
+    setIsTopUpModalOpen(false)
   }, [])
   
   // Передаем функцию закрытия модалок в родительский компонент
@@ -188,14 +199,14 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
       const version = WebApp.version
       const theme = WebApp.colorScheme
       
-      alert(`Telegram WebApp Info:
+      console.log(`Telegram WebApp Info:
 Пользователь: ${userInfo ? `${userInfo.first_name} ${userInfo.last_name || ''}` : 'Не определен'}
 Платформа: ${platform}
 Версия: ${version}
 Тема: ${theme}
 Готов: ${WebApp.isExpanded ? 'Да' : 'Нет'}`)
     } catch (error) {
-      alert('Ошибка при получении данных Telegram WebApp: ' + error)
+      console.error('Ошибка при получении данных Telegram WebApp: ' + error)
     }
   }
 
@@ -262,7 +273,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
                 
                 {/* Кнопка действия */}
                 <button 
-                  onClick={() => alert(card.status === 'ACTIVE' ? 'Карта активна!' : 'Карта неактивна!')}
+                  onClick={() => console.log(card.status === 'ACTIVE' ? 'Карта активна!' : 'Карта неактивна!')}
                   className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
                 >
                   {card.status === 'ACTIVE' ? 'Управлять картой' : 'Активировать'}
@@ -302,7 +313,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
             <Button 
               label="Тест"
               icon="pi pi-check"
-              onClick={() => alert('Кнопка работает!')}
+              onClick={() => console.log('Кнопка работает!')}
               className="p-button-sm p-button-secondary"
             />
           </div>
@@ -319,6 +330,53 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
       <CardIssueModal 
         isOpen={isCardIssueModalOpen}
         onClose={() => setIsCardIssueModalOpen(false)}
+        onNext={() => {
+          setIsCardIssueModalOpen(false)
+          if (isUserRegistered) {
+            // Если пользователь уже зарегистрирован, переходим к пополнению
+            setIsTopUpModalOpen(true)
+          } else {
+            // Если не зарегистрирован, переходим к активации
+            setIsEmailActivationModalOpen(true)
+          }
+        }}
+      />
+
+      {/* Email Activation Modal */}
+      <EmailActivationModal 
+        isOpen={isEmailActivationModalOpen}
+        onClose={() => setIsEmailActivationModalOpen(false)}
+        onNext={(email) => {
+          setUserEmail(email)
+          setIsEmailActivationModalOpen(false)
+          setIsCodeConfirmationModalOpen(true)
+        }}
+      />
+
+      {/* Code Confirmation Modal */}
+      <CodeConfirmationModal 
+        isOpen={isCodeConfirmationModalOpen}
+        onClose={() => setIsCodeConfirmationModalOpen(false)}
+        onConfirm={() => {
+          console.log('Карта успешно активирована!')
+          setIsUserRegistered(true) // Пользователь теперь зарегистрирован
+          setIsCodeConfirmationModalOpen(false)
+          setIsTopUpModalOpen(true) // Переходим к пополнению
+        }}
+        onResend={() => {
+          console.log('Код отправлен повторно')
+        }}
+        email={userEmail}
+      />
+
+      {/* Top Up Modal */}
+      <TopUpModal 
+        isOpen={isTopUpModalOpen}
+        onClose={() => setIsTopUpModalOpen(false)}
+        onPay={(amount) => {
+          console.log(`Пополнение на сумму: $${amount}`)
+          setIsTopUpModalOpen(false)
+        }}
       />
     </div>
   )

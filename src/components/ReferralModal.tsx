@@ -10,12 +10,12 @@ const ReferralModal: React.FC<ReferralModalProps> = ({ isOpen, onClose }) => {
 
   const handleShareQR = () => {
     // Логика поделиться QR-кодом
-    alert('Поделиться QR-кодом')
+    console.log('Поделиться QR-кодом')
   }
 
   const handleCopyLink = () => {
     // Логика копирования ссылки
-    alert('Ссылка скопирована!')
+    console.log('Ссылка скопирована!')
   }
 
   return (

@@ -130,7 +130,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
           className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
           onClick={() => {
             setSidebarVisible(false)
-            alert('Данные сохранены!')
+            console.log('Данные сохранены!')
           }}
         />
         <Button 
