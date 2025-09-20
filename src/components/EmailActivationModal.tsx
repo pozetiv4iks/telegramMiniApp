@@ -47,11 +47,6 @@ const EmailActivationModal: React.FC<EmailActivationModalProps> = ({ isOpen, onC
             <i className="pi pi-chevron-left"></i>
             <span>Back</span>
           </button>
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-4 bg-white rounded"></div>
-            <i className="pi pi-chevron-down text-gray-400"></i>
-            <i className="pi pi-ellipsis-v text-gray-400"></i>
-          </div>
         </div>
         
         <div className="p-6 space-y-6" style={{ paddingBottom: '120px' }}>
