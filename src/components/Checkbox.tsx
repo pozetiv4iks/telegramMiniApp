@@ -1,9 +1,8 @@
 import React from 'react'
-import { Checkbox as PrimeCheckbox, CheckboxChangeEvent } from 'primereact/checkbox'
 
 interface CheckboxProps {
   checked?: boolean
-  onChange?: (e: CheckboxChangeEvent) => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   label?: string
   className?: string
   disabled?: boolean
@@ -29,20 +28,23 @@ const Checkbox: React.FC<CheckboxProps> = ({
   id
 }) => {
   return (
-    <div className={`flex align-items-center ${className}`}>
-      <PrimeCheckbox
+    <div className={`flex items-center ${className}`}>
+      <input
+        type="checkbox"
         checked={checked}
         onChange={onChange}
         disabled={disabled}
         readOnly={readOnly}
         required={required}
-        invalid={invalid}
         value={value}
         name={name}
-        inputId={id}
+        id={id}
+        className={`w-5 h-5 text-tg-blue bg-white border-gray-300 rounded focus:ring-tg-blue focus:ring-2 ${
+          invalid ? 'border-red-500' : ''
+        }`}
       />
       {label && (
-        <label htmlFor={id} className="ml-2">
+        <label htmlFor={id} className="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
           {label}
         </label>
       )}

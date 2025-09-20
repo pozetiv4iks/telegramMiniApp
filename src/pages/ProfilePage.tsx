@@ -7,8 +7,7 @@ import Checkbox from '../components/Checkbox'
 import Dropdown from '../components/Dropdown'
 import Sidebar from '../components/Sidebar'
 import BottomNavigation from '../components/BottomNavigation'
-import '../components/BottomNavigation.css'
-import './Pages.css'
+import { HomeIcon, HistoryIcon, ProfileIcon } from '../components/icons'
 
 interface User {
   id: number
@@ -37,9 +36,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   ]
 
   const navigationItems = [
-    { id: 'home', label: 'Главная', icon: 'pi pi-home', path: '/', active: currentPage === 'home' },
-    { id: 'history', label: 'История', icon: 'pi pi-history', path: '/history', active: currentPage === 'history' },
-    { id: 'profile', label: 'Профиль', icon: 'pi pi-user', path: '/profile', active: currentPage === 'profile' }
+    { id: 'home', label: 'Главная', icon: <HomeIcon />, path: '/', active: currentPage === 'home' },
+    { id: 'history', label: 'История', icon: <HistoryIcon />, path: '/history', active: currentPage === 'history' },
+    { id: 'profile', label: 'Профиль', icon: <ProfileIcon />, path: '/profile', active: currentPage === 'profile' }
   ]
 
   const handleNavigationClick = (item: any) => {
@@ -51,12 +50,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   }
 
   const sidebarContent = (
-    <div className="sidebar-content">
-      <h2>Редактировать профиль</h2>
+    <div className="p-4">
+      <h2 className="text-2xl font-semibold text-black mb-6">Редактировать профиль</h2>
       
-      <div className="form-section">
-        <div className="form-group">
-          <label>Имя:</label>
+      <div className="mt-6">
+        <div className="mb-4">
+          <label className="block mb-2 font-medium text-gray-700">Имя:</label>
           <InputText
             value={user?.first_name || ''}
             placeholder="Введите имя"
@@ -64,8 +63,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
           />
         </div>
         
-        <div className="form-group">
-          <label>Фамилия:</label>
+        <div className="mb-4">
+          <label className="block mb-2 font-medium text-gray-700">Фамилия:</label>
           <InputText
             value={user?.last_name || ''}
             placeholder="Введите фамилию"
@@ -73,8 +72,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
           />
         </div>
         
-        <div className="form-group">
-          <label>Username:</label>
+        <div className="mb-4">
+          <label className="block mb-2 font-medium text-gray-700">Username:</label>
           <InputText
             value={user?.username || ''}
             placeholder="Введите username"
@@ -82,8 +81,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
           />
         </div>
         
-        <div className="form-group">
-          <label>Язык:</label>
+        <div className="mb-4">
+          <label className="block mb-2 font-medium text-gray-700">Язык:</label>
           <Dropdown
             value={language}
             onChange={(e) => setLanguage(e.value)}
@@ -93,7 +92,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
         </div>
       </div>
       
-      <div className="sidebar-actions">
+      <div className="flex flex-col gap-3 mt-8">
         <Button 
           label="Сохранить" 
           icon="pi pi-check"
@@ -112,26 +111,27 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   )
 
   return (
-    <div className="profile-page">
-      <div className="page-content">
-        <div className="page-header">
-          <h1>Профиль</h1>
-          <p>Управление настройками</p>
+    <div className="h-screen flex flex-col bg-white overflow-hidden">
+      <div className="flex-1 overflow-y-auto" style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}>
+        <div className="p-4 pb-20">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-black mb-2">Профиль</h1>
+          <p className="text-gray-600 text-base">Управление настройками</p>
         </div>
 
         {/* Профиль пользователя */}
-        <Card className="profile-card">
-          <div className="profile-header">
+        <Card className="mb-6 shadow-lg border border-gray-200">
+          <div className="flex items-center gap-4">
             <Avatar 
               image={user?.photo_url} 
               icon="pi pi-user" 
               size="xlarge" 
               shape="circle"
             />
-            <div className="profile-info">
-              <h2>{user?.first_name} {user?.last_name}</h2>
-              <p className="profile-username">@{user?.username}</p>
-              <p className="profile-id">ID: {user?.id}</p>
+            <div className="flex-1">
+              <h2 className="text-xl font-semibold text-black mb-1">{user?.first_name} {user?.last_name}</h2>
+              <p className="text-tg-blue font-medium mb-1">@{user?.username}</p>
+              <p className="text-gray-600 text-sm">ID: {user?.id}</p>
             </div>
             <Button 
               icon="pi pi-pencil"
@@ -143,85 +143,88 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
         </Card>
 
         {/* Настройки */}
-        <Card className="settings-card">
-          <h3>Настройки</h3>
+        <Card className="mb-6 shadow-lg border border-gray-200">
+          <h3 className="text-lg font-semibold text-black mb-4">Настройки</h3>
           
-          <div className="settings-list">
-            <div className="setting-item">
-              <div className="setting-info">
-                <h4>Уведомления</h4>
-                <p>Получать push-уведомления</p>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+              <div className="flex-1">
+                <h4 className="text-base font-medium text-black mb-1">Уведомления</h4>
+                <p className="text-sm text-gray-600">Получать push-уведомления</p>
               </div>
               <Checkbox
                 checked={notifications}
-                onChange={(e) => setNotifications(e.checked || false)}
+                onChange={(e) => setNotifications(e.target.checked)}
               />
             </div>
             
-            <div className="setting-item">
-              <div className="setting-info">
-                <h4>Темная тема</h4>
-                <p>Использовать темную тему</p>
+            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+              <div className="flex-1">
+                <h4 className="text-base font-medium text-black mb-1">Темная тема</h4>
+                <p className="text-sm text-gray-600">Использовать темную тему</p>
               </div>
               <Checkbox
                 checked={darkMode}
-                onChange={(e) => setDarkMode(e.checked || false)}
+                onChange={(e) => setDarkMode(e.target.checked)}
               />
             </div>
             
-            <div className="setting-item">
-              <div className="setting-info">
-                <h4>Язык</h4>
-                <p>Выберите язык интерфейса</p>
+            <div className="flex items-center justify-between py-3">
+              <div className="flex-1">
+                <h4 className="text-base font-medium text-black mb-1">Язык</h4>
+                <p className="text-sm text-gray-600">Выберите язык интерфейса</p>
               </div>
               <Dropdown
                 value={language}
                 onChange={(e) => setLanguage(e.value)}
                 options={languageOptions}
-                className="language-dropdown"
+                className="min-w-[120px]"
               />
             </div>
           </div>
         </Card>
 
         {/* Действия */}
-        <Card className="actions-card">
-          <h3>Действия</h3>
+        <Card className="shadow-lg border border-gray-200">
+          <h3 className="text-lg font-semibold text-black mb-4">Действия</h3>
           
-          <div className="actions-list">
+          <div className="flex flex-col gap-3">
             <Button 
               label="Поделиться приложением" 
               icon="pi pi-share-alt"
               outlined
-              className="w-full action-button"
+              className="w-full justify-start"
             />
             <Button 
               label="Скопировать ссылку" 
               icon="pi pi-copy"
               outlined
-              className="w-full action-button"
+              className="w-full justify-start"
             />
             <Button 
               label="О приложении" 
               icon="pi pi-info-circle"
               outlined
-              className="w-full action-button"
+              className="w-full justify-start"
             />
             <Button 
               label="Выйти" 
               icon="pi pi-sign-out"
               severity="danger"
               outlined
-              className="w-full action-button"
+              className="w-full justify-start"
             />
           </div>
         </Card>
+        </div>
       </div>
 
-      <BottomNavigation
-        items={navigationItems}
-        onItemClick={handleNavigationClick}
-      />
+      <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0)' }}>
+        <BottomNavigation
+          items={navigationItems}
+          onItemClick={handleNavigationClick}
+        />
+      </div>
 
       <Sidebar
         visible={sidebarVisible}

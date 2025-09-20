@@ -3,8 +3,7 @@ import { Card } from 'primereact/card'
 import { Avatar } from 'primereact/avatar'
 import Button from '../components/Button'
 import BottomNavigation from '../components/BottomNavigation'
-import '../components/BottomNavigation.css'
-import './Pages.css'
+import { HomeIcon, HistoryIcon, ProfileIcon } from '../components/icons'
 
 interface HistoryPageProps {
   user: any
@@ -54,9 +53,9 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
   ]
 
   const navigationItems = [
-    { id: 'home', label: 'Главная', icon: 'pi pi-home', path: '/', active: currentPage === 'home' },
-    { id: 'history', label: 'История', icon: 'pi pi-history', path: '/history', active: currentPage === 'history' },
-    { id: 'profile', label: 'Профиль', icon: 'pi pi-user', path: '/profile', active: currentPage === 'profile' }
+    { id: 'home', label: 'Главная', icon: <HomeIcon />, path: '/', active: currentPage === 'home' },
+    { id: 'history', label: 'История', icon: <HistoryIcon />, path: '/history', active: currentPage === 'history' },
+    { id: 'profile', label: 'Профиль', icon: <ProfileIcon />, path: '/profile', active: currentPage === 'profile' }
   ]
 
   const handleNavigationClick = (item: any) => {
@@ -75,53 +74,54 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
   }
 
   return (
-    <div className="history-page">
-      <div className="page-content">
-        <div className="page-header">
-          <h1>История операций</h1>
-          <p>Все ваши транзакции</p>
+    <div className="h-screen flex flex-col bg-white overflow-hidden">
+      <div className="flex-1 overflow-y-auto" style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}>
+        <div className="p-4 pb-20">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-black mb-2">История операций</h1>
+          <p className="text-gray-600 text-base">Все ваши транзакции</p>
         </div>
 
-        <div className="history-filters">
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
           <Button 
             label="Все" 
             size="small"
-            className="filter-button active"
+            className="flex-shrink-0 whitespace-nowrap bg-tg-blue text-white"
           />
           <Button 
             label="Доходы" 
             size="small"
             severity="secondary"
-            className="filter-button"
+            className="flex-shrink-0 whitespace-nowrap"
           />
           <Button 
             label="Расходы" 
             size="small"
             severity="secondary"
-            className="filter-button"
+            className="flex-shrink-0 whitespace-nowrap"
           />
         </div>
 
-        <div className="history-list">
+        <div className="flex-1 space-y-4">
           {historyItems.map((item) => (
-            <Card key={item.id} className="history-item">
-              <div className="history-item-content">
-                <div className="history-item-icon">
+            <Card key={item.id} className="mb-4 shadow-sm border border-gray-200">
+              <div className="flex items-center gap-4">
+                <div className="flex-shrink-0">
                   <Avatar 
                     icon={item.icon} 
                     size="large" 
                     shape="circle"
-                    className={item.type === 'income' ? 'income-icon' : 'expense-icon'}
+                    className={item.type === 'income' ? 'bg-green-500' : 'bg-red-500'}
                   />
                 </div>
                 
-                <div className="history-item-details">
-                  <h3>{item.title}</h3>
-                  <p className="history-date">{item.date}</p>
+                <div className="flex-1">
+                  <h3 className="text-base font-semibold text-black mb-1">{item.title}</h3>
+                  <p className="text-sm text-gray-600">{item.date}</p>
                 </div>
                 
-                <div className="history-item-amount">
-                  <span className={`amount ${getAmountClass(item.amount)}`}>
+                <div className="flex-shrink-0">
+                  <span className={`text-lg font-semibold ${getAmountClass(item.amount) === 'amount-positive' ? 'text-green-500' : 'text-red-500'}`}>
                     {formatAmount(item.amount)}
                   </span>
                 </div>
@@ -130,7 +130,7 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
           ))}
         </div>
 
-        <div className="load-more">
+        <div className="mt-6">
           <Button 
             label="Загрузить еще" 
             icon="pi pi-refresh"
@@ -138,12 +138,15 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, set
             className="w-full"
           />
         </div>
+        </div>
       </div>
 
-      <BottomNavigation
-        items={navigationItems}
-        onItemClick={handleNavigationClick}
-      />
+      <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0)' }}>
+        <BottomNavigation
+          items={navigationItems}
+          onItemClick={handleNavigationClick}
+        />
+      </div>
     </div>
   )
 }

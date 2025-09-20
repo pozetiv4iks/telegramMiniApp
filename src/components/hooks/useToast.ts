@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { Toast } from 'primereact/toast'
 
 interface ToastMessage {
@@ -9,7 +8,7 @@ interface ToastMessage {
 }
 
 class ToastService {
-  private toastRef = useRef<Toast>(null)
+  private toastRef: React.RefObject<Toast> | null = null
 
   setToastRef(ref: React.RefObject<Toast>) {
     this.toastRef = ref

@@ -1,73 +1,101 @@
-import './App.css'
+import React, { useState, useEffect } from 'react'
+import WebApp from '@twa-dev/sdk'
+import HomePage from './pages/HomePage'
+import HistoryPage from './pages/HistoryPage'
+import ProfilePage from './pages/ProfilePage'
+import Toast from './components/Toast'
+
+// Моковые данные пользователя для демонстрации
+const mockUser = {
+  id: 123456789,
+  first_name: undefined as string | undefined,
+  last_name: undefined as string | undefined,
+  username: undefined as string | undefined,
+  photo_url: undefined as string | undefined
+}
 
 function App() {
-  console.log('App component rendered!')
+  const [currentPage, setCurrentPage] = useState('home')
+  const [user, setUser] = useState(mockUser)
+  const [isLoading, setIsLoading] = useState(true)
 
-  return (
-    <div style={{ 
-      minHeight: '100vh', 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'Arial, sans-serif'
-    }}>
-      <div style={{
-        background: 'white',
-        padding: '40px',
-        borderRadius: '20px',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-        textAlign: 'center',
-        maxWidth: '400px',
-        width: '90%'
-      }}>
-        <h1 style={{ 
-          color: '#333', 
-          marginBottom: '20px',
-          fontSize: '2rem'
-        }}>
-          🎉 Telegram Mini App
-        </h1>
-        
-        <p style={{ 
-          color: '#666', 
-          marginBottom: '30px',
-          fontSize: '1.1rem'
-        }}>
-          Приложение работает!
-        </p>
-        
-        <button 
-          onClick={() => alert('Кнопка работает!')}
-          style={{
-            background: '#667eea',
-            color: 'white',
-            border: 'none',
-            padding: '15px 30px',
-            borderRadius: '10px',
-            fontSize: '1rem',
-            cursor: 'pointer',
-            transition: 'all 0.3s'
-          }}
-          onMouseOver={(e) => (e.target as HTMLButtonElement).style.background = '#5a6fd8'}
-          onMouseOut={(e) => (e.target as HTMLButtonElement).style.background = '#667eea'}
-        >
-          Тестовая кнопка
-        </button>
-        
-        <div style={{ 
-          marginTop: '30px', 
-          padding: '20px', 
-          background: '#f8f9fa', 
-          borderRadius: '10px' 
-        }}>
-          <h3 style={{ color: '#333', marginBottom: '10px' }}>Статус:</h3>
-          <p style={{ color: '#28a745', margin: '5px 0' }}>✅ React работает</p>
-          <p style={{ color: '#28a745', margin: '5px 0' }}>✅ TypeScript работает</p>
-          <p style={{ color: '#28a745', margin: '5px 0' }}>✅ Vite работает</p>
-          <p style={{ color: '#28a745', margin: '5px 0' }}>✅ Стили работают</p>
+  useEffect(() => {
+    // Инициализация Telegram WebApp
+    WebApp.ready()
+    WebApp.expand()
+
+    // Получение данных пользователя из Telegram
+    if (WebApp.initDataUnsafe?.user) {
+      const tgUser = WebApp.initDataUnsafe.user
+      setUser({
+        id: tgUser.id,
+        first_name: tgUser.first_name,
+        last_name: tgUser.last_name,
+        username: tgUser.username,
+        photo_url: tgUser.photo_url
+      })
+    }
+
+    setIsLoading(false)
+    console.log('Telegram WebApp initialized!', { user: WebApp.initDataUnsafe?.user })
+  }, [])
+
+  console.log('App component rendered!', { currentPage, user, isLoading })
+
+  // Функция для рендера текущей страницы
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return (
+          <HomePage 
+            user={user} 
+            currentPage={currentPage} 
+            setCurrentPage={setCurrentPage} 
+          />
+        )
+      case 'history':
+        return (
+          <HistoryPage 
+            user={user} 
+            currentPage={currentPage} 
+            setCurrentPage={setCurrentPage} 
+          />
+        )
+      case 'profile':
+        return (
+          <ProfilePage 
+            user={user} 
+            currentPage={currentPage} 
+            setCurrentPage={setCurrentPage} 
+          />
+        )
+      default:
+        return (
+          <HomePage 
+            user={user} 
+            currentPage={currentPage} 
+            setCurrentPage={setCurrentPage} 
+          />
+        )
+    }
+  }
+
+  // Экран загрузки
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-tg-blue border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Загрузка...</p>
         </div>
       </div>
+    )
+  }
+
+  return (
+    <div className="h-screen w-full bg-white">
+      {renderCurrentPage()}
+      <Toast />
     </div>
   )
 }
