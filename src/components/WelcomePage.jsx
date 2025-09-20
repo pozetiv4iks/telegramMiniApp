@@ -54,7 +54,7 @@ const WelcomePage = ({ user, onStart }) => {
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header с приветствием */}
         <div className="text-center mb-12">
@@ -62,12 +62,12 @@ const WelcomePage = ({ user, onStart }) => {
             <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-green-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
               <span className="text-4xl">💳</span>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Fintech Wallet</h1>
-            <p className="text-gray-600 text-lg">Ваш персональный финансовый помощник</p>
+            <h1 className="text-4xl font-bold text-white mb-2">Fintech Wallet</h1>
+            <p className="text-gray-300 text-lg">Ваш персональный финансовый помощник</p>
           </div>
           
           {user && (
-            <div className="bg-white rounded-2xl p-6 shadow-lg max-w-md mx-auto">
+            <div className="bg-gray-800 rounded-2xl p-6 shadow-lg max-w-md mx-auto border border-gray-700">
               <div className="flex items-center space-x-4">
                 <div className="relative">
                   <img 

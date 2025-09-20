@@ -19,7 +19,7 @@ const BottomNavigation = ({ activeTab, onTabChange }) => {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 safe-area-pb">
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 px-4 py-2 safe-area-pb">
       <div className="flex justify-around items-center">
         {tabs.map((tab) => (
           <button
@@ -27,8 +27,8 @@ const BottomNavigation = ({ activeTab, onTabChange }) => {
             onClick={() => handleTabClick(tab.id)}
             className={`flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 ${
               activeTab === tab.id
-                ? `${tab.color} bg-opacity-10`
-                : 'text-gray-500 hover:text-gray-700'
+                ? `${tab.color} bg-opacity-20`
+                : 'text-gray-400 hover:text-gray-200'
             }`}
           >
             <span className="text-2xl mb-1">{tab.icon}</span>
