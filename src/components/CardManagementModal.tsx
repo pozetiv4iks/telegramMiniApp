@@ -92,6 +92,51 @@ const CardManagementModal: React.FC<CardManagementModalProps> = ({
       amount: 7,
       time: '10:30',
       date: 'Вчера, 21 августа'
+    },
+    {
+      id: '4',
+      status: 'APPROVED',
+      description: 'Покупка в магазине',
+      cardNumber: '**** 3456',
+      amount: 25.50,
+      time: '09:15',
+      date: 'Вчера, 21 августа'
+    },
+    {
+      id: '5',
+      status: 'APPROVED',
+      description: 'Оплата услуг',
+      cardNumber: '**** 3456',
+      amount: 15.00,
+      time: '18:45',
+      date: '20 августа'
+    },
+    {
+      id: '6',
+      status: 'DECLINED',
+      description: 'Попытка снятия наличных',
+      cardNumber: '**** 3456',
+      amount: 100,
+      time: '14:20',
+      date: '20 августа'
+    },
+    {
+      id: '7',
+      status: 'APPROVED',
+      description: 'Перевод на другую карту',
+      cardNumber: '**** 3456',
+      amount: 50,
+      time: '12:00',
+      date: '19 августа'
+    },
+    {
+      id: '8',
+      status: 'PENDING',
+      description: 'Онлайн покупка',
+      cardNumber: '**** 3456',
+      amount: 75.99,
+      time: '16:30',
+      date: '19 августа'
     }
   ]
 
@@ -118,7 +163,7 @@ const CardManagementModal: React.FC<CardManagementModalProps> = ({
       />
       
       {/* Modal Content */}
-      <div className="relative w-full max-w-md bg-gray-900 rounded-t-2xl modal-slide-up h-full">
+      <div className="relative w-full max-w-md bg-gray-900 rounded-t-2xl modal-slide-up h-full flex flex-col">
         {/* Header */}
         <div className="flex justify-end p-4">
           <button
@@ -220,7 +265,7 @@ const CardManagementModal: React.FC<CardManagementModalProps> = ({
         </div>
 
         {/* Scrollable Transactions Section */}
-        <div className="flex-1 overflow-y-auto px-6" style={{ paddingBottom: '120px' }}>
+        <div className="flex-1 overflow-y-auto px-6 pb-6">
           <div>
             <h3 className="text-white text-lg font-semibold mb-4">Последние операции</h3>
             
