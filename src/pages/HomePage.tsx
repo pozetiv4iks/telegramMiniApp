@@ -7,6 +7,7 @@ import EmailActivationModal from '../components/EmailActivationModal'
 import CodeConfirmationModal from '../components/CodeConfirmationModal'
 import TopUpModal from '../components/TopUpModal'
 import CardManagementModal from '../components/CardManagementModal'
+import PaymentModal from '../components/PaymentModal'
 import { Card } from '../types/card'
 
 interface User {
@@ -35,6 +36,8 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
   const [isTopUpModalOpen, setIsTopUpModalOpen] = useState(false)
   const [isCardManagementModalOpen, setIsCardManagementModalOpen] = useState(false)
   const [selectedCardIndex, setSelectedCardIndex] = useState(0)
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
+  const [paymentAmount, setPaymentAmount] = useState(0)
   
   // Функция закрытия всех модалок
   const closeAllModals = useCallback(() => {
@@ -44,6 +47,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
     setIsCodeConfirmationModalOpen(false)
     setIsTopUpModalOpen(false)
     setIsCardManagementModalOpen(false)
+    setIsPaymentModalOpen(false)
   }, [])
   
   // Передаем функцию закрытия модалок в родительский компонент
@@ -388,8 +392,9 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
         isOpen={isTopUpModalOpen}
         onClose={() => setIsTopUpModalOpen(false)}
         onPay={(amount) => {
-          console.log(`Пополнение на сумму: $${amount}`)
+          setPaymentAmount(amount)
           setIsTopUpModalOpen(false)
+          setIsPaymentModalOpen(true)
         }}
       />
 
@@ -407,6 +412,17 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
         onNewCard={() => {
           setIsCardManagementModalOpen(false)
           setIsCardIssueModalOpen(true)
+        }}
+      />
+
+      {/* Payment Modal */}
+      <PaymentModal 
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        amount={paymentAmount}
+        onSuccess={() => {
+          console.log('Платеж успешно обработан!')
+          setIsPaymentModalOpen(false)
         }}
       />
     </div>
