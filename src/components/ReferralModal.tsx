@@ -28,7 +28,7 @@ const ReferralModal: React.FC<ReferralModalProps> = ({ isOpen, onClose }) => {
       
       {/* Modal */}
       <div 
-        className="relative bg-gray-800 rounded-t-2xl w-full max-w-md mx-4 modal-slide-up"
+        className="relative bg-gray-800 rounded-t-2xl w-full modal-slide-up"
         style={{ marginTop: '167px' }}
       >
         {/* Header */}
