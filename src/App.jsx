@@ -16,13 +16,29 @@ function App() {
 
   useEffect(() => {
     // Инициализация Telegram WebApp
-    WebApp.ready()
-    WebApp.expand()
-    
-    // Получаем данные пользователя
-    if (WebApp.initDataUnsafe?.user) {
-      setUser(WebApp.initDataUnsafe.user)
-    } else {
+    try {
+      WebApp.ready()
+      WebApp.expand()
+      
+      // Получаем данные пользователя
+      if (WebApp.initDataUnsafe?.user) {
+        setUser(WebApp.initDataUnsafe.user)
+      } else {
+        // Для тестирования создаем мокового пользователя
+        setUser({
+          id: 123456789,
+          first_name: 'Иван',
+          last_name: 'Петров',
+          username: 'ivan_petrov',
+          photo_url: 'https://via.placeholder.com/150'
+        })
+      }
+      
+      // Настройка темы
+      WebApp.setHeaderColor('#2481cc')
+      WebApp.setBackgroundColor('#ffffff')
+    } catch (error) {
+      console.log('Telegram WebApp not available, using mock data')
       // Для тестирования создаем мокового пользователя
       setUser({
         id: 123456789,
@@ -33,20 +49,27 @@ function App() {
       })
     }
     
-    setIsReady(true)
-    
-    // Настройка темы
-    WebApp.setHeaderColor('#2481cc')
-    WebApp.setBackgroundColor('#ffffff')
+    // Устанавливаем isReady в true с небольшой задержкой
+    setTimeout(() => {
+      setIsReady(true)
+    }, 100)
     
     return () => {
-      WebApp.close()
+      try {
+        WebApp.close()
+      } catch (error) {
+        console.log('WebApp.close() not available')
+      }
     }
   }, [])
 
   const handleStartApp = () => {
     setShowWelcome(false)
-    WebApp.HapticFeedback.notificationOccurred('success')
+    try {
+      WebApp.HapticFeedback.notificationOccurred('success')
+    } catch (error) {
+      console.log('Haptic feedback not available')
+    }
   }
 
   const handleTabChange = (tabId) => {

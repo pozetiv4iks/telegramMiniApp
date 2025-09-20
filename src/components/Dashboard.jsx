@@ -18,8 +18,13 @@ const Dashboard = ({ user }) => {
   ]
 
   const handleQuickAction = (action) => {
-    WebApp.HapticFeedback.impactOccurred('medium')
-    WebApp.showAlert(`Выбрано: ${action.title}`)
+    try {
+      WebApp.HapticFeedback.impactOccurred('medium')
+      WebApp.showAlert(`Выбрано: ${action.title}`)
+    } catch (error) {
+      console.log('WebApp methods not available')
+      alert(`Выбрано: ${action.title}`)
+    }
   }
 
   return (

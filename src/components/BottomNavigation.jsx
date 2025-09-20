@@ -11,7 +11,11 @@ const BottomNavigation = ({ activeTab, onTabChange }) => {
 
   const handleTabClick = (tabId) => {
     onTabChange(tabId)
-    WebApp.HapticFeedback.impactOccurred('light')
+    try {
+      WebApp.HapticFeedback.impactOccurred('light')
+    } catch (error) {
+      console.log('Haptic feedback not available')
+    }
   }
 
   return (
