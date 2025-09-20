@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import WebApp from '@twa-dev/sdk'
-import { Button } from 'primereact/button'
-import { Card } from 'primereact/card'
-import { Avatar } from 'primereact/avatar'
+import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
+import HomePage from './pages/HomePage'
+import HistoryPage from './pages/HistoryPage'
+import ProfilePage from './pages/ProfilePage'
+import Toast from './components/Toast'
 import 'primereact/resources/themes/lara-light-blue/theme.css'
 import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
@@ -79,64 +81,33 @@ function App() {
     )
   }
 
-  const handleButtonClick = () => {
-    try {
-      WebApp.HapticFeedback.notificationOccurred('success')
-      WebApp.showAlert('Кнопка нажата!')
-    } catch (error) {
-      console.log('WebApp methods not available')
-      alert('Кнопка нажата!')
+  return (
+    <NavigationProvider>
+      <div className="app">
+        <AppContent user={user} />
+        <Toast />
+      </div>
+    </NavigationProvider>
+  )
+}
+
+function AppContent({ user }: { user: User | null }) {
+  const { currentPage } = useNavigation()
+
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return <HomePage user={user} />
+      case 'history':
+        return <HistoryPage user={user} />
+      case 'profile':
+        return <ProfilePage user={user} />
+      default:
+        return <HomePage user={user} />
     }
   }
 
-  return (
-    <div className="app">
-      <div className="container">
-        <h1>Telegram Mini App</h1>
-        
-        {user && (
-          <Card className="user-card">
-            <div className="user-info">
-              <div className="user-header">
-                <Avatar 
-                  image={user.photo_url} 
-                  icon="pi pi-user" 
-                  size="large" 
-                  shape="circle"
-                />
-                <div className="user-details">
-                  <h2>Добро пожаловать, {user.first_name}!</h2>
-                  <p className="user-id">ID: {user.id}</p>
-                  {user.username && <p className="user-username">@{user.username}</p>}
-                </div>
-              </div>
-            </div>
-          </Card>
-        )}
-        
-        <Card className="content-card">
-          <div className="content">
-            <p>Ваше Telegram Mini App готово к работе!</p>
-            <p>Теперь с PrimeReact компонентами</p>
-          </div>
-        </Card>
-
-        <div className="button-group">
-          <Button 
-            label="Тестовая кнопка" 
-            icon="pi pi-check" 
-            onClick={handleButtonClick}
-            className="p-button-primary"
-          />
-          <Button 
-            label="Вторая кнопка" 
-            icon="pi pi-star" 
-            className="p-button-secondary"
-          />
-        </div>
-      </div>
-    </div>
-  )
+  return renderCurrentPage()
 }
 
 export default App
