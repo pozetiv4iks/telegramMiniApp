@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Avatar } from 'primereact/avatar'
 import Button from '../components/Button'
 import InputText from '../components/InputText'
-import Dropdown from '../components/Dropdown'
+import Checkbox from '../components/Checkbox'
 import Sidebar from '../components/Sidebar'
 import BottomNavigation from '../components/BottomNavigation'
 import ReferralModal from '../components/ReferralModal'
@@ -23,14 +23,17 @@ interface ProfilePageProps {
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrentPage }) => {
   const [sidebarVisible, setSidebarVisible] = useState(false)
-  const [language, setLanguage] = useState('ru')
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
+  const [personalInfoModalVisible, setPersonalInfoModalVisible] = useState(false)
+  const [email, setEmail] = useState('test@gmail.com')
+  const [lastName, setLastName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [patronymic, setPatronymic] = useState('')
+  const [passportSeries, setPassportSeries] = useState('')
+  const [passportNumber, setPassportNumber] = useState('')
+  const [registrationPlace, setRegistrationPlace] = useState('')
+  const [consentChecked, setConsentChecked] = useState(true)
 
-  const languageOptions = [
-    { label: 'Русский', value: 'ru' },
-    { label: 'English', value: 'en' },
-    { label: 'Español', value: 'es' }
-  ]
 
   const navigationItems = [
     { id: 'home', label: 'Главная', icon: 'pi pi-home', path: '/', active: currentPage === 'home' },
@@ -42,11 +45,35 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
     setCurrentPage(item.id)
   }
 
+  const handlePersonalInfoClick = () => {
+    setPersonalInfoModalVisible(true)
+  }
+
+  const handleSave = () => {
+    setSidebarVisible(false)
+    // Здесь можно добавить логику сохранения данных
+    alert('Данные сохранены!')
+  }
+
+  const handlePersonalInfoSave = () => {
+    setPersonalInfoModalVisible(false)
+    alert('Личная информация сохранена!')
+  }
+
   const sidebarContent = (
     <div className="p-4 bg-gray-800 h-full">
       <h2 className="text-2xl font-semibold text-white mb-6">Редактировать профиль</h2>
       
       <div className="mt-6">
+        <div className="mb-4">
+          <label className="block mb-2 font-medium text-gray-300">ID (неизменяемый):</label>
+          <InputText
+            value={user?.id?.toString() || ''}
+            disabled
+            className="w-full bg-gray-600 text-gray-400 border-gray-500 cursor-not-allowed"
+          />
+        </div>
+        
         <div className="mb-4">
           <label className="block mb-2 font-medium text-gray-300">Имя:</label>
           <InputText
@@ -74,15 +101,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
           />
         </div>
         
-        <div className="mb-4">
-          <label className="block mb-2 font-medium text-gray-300">Язык:</label>
-          <Dropdown
-            value={language}
-            onChange={(e) => setLanguage(e.value)}
-            options={languageOptions}
-            className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
-          />
-        </div>
+                <div className="mb-4">
+                  <label className="block mb-2 font-medium text-gray-300">Email:</label>
+                  <InputText
+                    value={email}
+                    disabled
+                    placeholder="Введите email"
+                    className="w-full bg-gray-600 text-gray-400 border-gray-500 cursor-not-allowed"
+                  />
+                </div>
+        
       </div>
       
       <div className="flex flex-col gap-3 mt-8">
@@ -130,17 +158,17 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
         {/* Меню профиля */}
         <div className="mb-6">
           <div className="bg-gray-800 rounded-lg">
-            <button 
-              onClick={() => setSidebarVisible(true)}
-              className="w-full flex items-center gap-3 p-4 border-b border-gray-700 hover:bg-gray-700 transition-colors"
-            >
-              <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
-                <i className="pi pi-user-edit text-white text-sm"></i>
-              </div>
-              <div className="flex-1 text-left">
-                <h4 className="text-white font-medium">Личная информация</h4>
-              </div>
-            </button>
+                    <button 
+                      onClick={handlePersonalInfoClick}
+                      className="w-full flex items-center gap-3 p-4 border-b border-gray-700 hover:bg-gray-700 transition-colors"
+                    >
+                      <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
+                        <i className="pi pi-user-edit text-white text-sm"></i>
+                      </div>
+                      <div className="flex-1 text-left">
+                        <h4 className="text-white font-medium">Личная информация</h4>
+                      </div>
+                    </button>
             
             <div className="flex items-center gap-3 p-4 border-b border-gray-700">
               <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
@@ -199,6 +227,125 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
         isOpen={isReferralModalOpen}
         onClose={() => setIsReferralModalOpen(false)}
       />
+
+      {/* Personal Information Modal */}
+      {personalInfoModalVisible && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() => setPersonalInfoModalVisible(false)}
+          ></div>
+          <div className="relative bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-white text-lg font-semibold">Личная информация</h2>
+              <button 
+                onClick={() => setPersonalInfoModalVisible(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <i className="pi pi-times text-xl"></i>
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              {/* Email */}
+              <div>
+                <label className="block mb-2 font-medium text-gray-300">Email</label>
+                <InputText
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                />
+              </div>
+
+              {/* Фамилия */}
+              <div>
+                <label className="block mb-2 font-medium text-gray-300">Фамилия</label>
+                <InputText
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Введите свою фамилию"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                />
+              </div>
+
+              {/* Имя */}
+              <div>
+                <label className="block mb-2 font-medium text-gray-300">Имя</label>
+                <InputText
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Введите своё имя"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                />
+              </div>
+
+              {/* Отчество */}
+              <div>
+                <label className="block mb-2 font-medium text-gray-300">Отчество</label>
+                <InputText
+                  value={patronymic}
+                  onChange={(e) => setPatronymic(e.target.value)}
+                  placeholder="Введите своё отчество"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                />
+              </div>
+
+              {/* Серия паспорта */}
+              <div>
+                <label className="block mb-2 font-medium text-gray-300">Серия паспорта</label>
+                <InputText
+                  value={passportSeries}
+                  onChange={(e) => setPassportSeries(e.target.value)}
+                  placeholder="Введите серию паспорта"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                />
+              </div>
+
+              {/* Номер паспорта */}
+              <div>
+                <label className="block mb-2 font-medium text-gray-300">Номер паспорта</label>
+                <InputText
+                  value={passportNumber}
+                  onChange={(e) => setPassportNumber(e.target.value)}
+                  placeholder="Введите номер паспорта"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                />
+              </div>
+
+              {/* Место регистрации */}
+              <div>
+                <label className="block mb-2 font-medium text-gray-300">Место регистрации</label>
+                <InputText
+                  value={registrationPlace}
+                  onChange={(e) => setRegistrationPlace(e.target.value)}
+                  placeholder="Введите место регистрации"
+                  className="w-full bg-gray-700 text-white border-gray-600 focus:border-yellow-400"
+                />
+              </div>
+
+              {/* Согласие на обработку данных */}
+              <div className="flex items-center gap-2 mt-6">
+                <Checkbox
+                  checked={consentChecked}
+                  onChange={(e) => setConsentChecked(e.target.checked)}
+                  className="custom-checkbox"
+                />
+                <span className="text-gray-300 text-sm">
+                  Даю согласие на <strong>Обработку персональных данных</strong>
+                </span>
+              </div>
+
+              {/* Кнопка сохранения */}
+              <button 
+                onClick={handlePersonalInfoSave}
+                className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors mt-6"
+              >
+                Сохранить
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

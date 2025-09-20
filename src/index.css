@@ -256,3 +256,65 @@ div {
   font-size: 1.25rem !important;
 }
 
+/* Кастомные стили для чекбокса */
+input[type="checkbox"]:checked {
+  background-color: #fbbf24 !important; /* yellow-400 */
+  border-color: #fbbf24 !important;
+  color: #000000 !important; /* черный цвет для галочки */
+}
+
+input[type="checkbox"]:checked::before {
+  color: #000000 !important; /* черная галочка */
+}
+
+/* Стили для PrimeReact Checkbox */
+.p-checkbox .p-checkbox-box.p-highlight {
+  background-color: #fbbf24 !important; /* yellow-400 */
+  border-color: #fbbf24 !important;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon {
+  color: #000000 !important; /* черная галочка */
+}
+
+/* Более специфичные стили для PrimeReact Checkbox */
+.p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon:before {
+  color: #000000 !important; /* черная галочка */
+}
+
+/* Принудительные стили для чекбокса */
+.p-checkbox .p-checkbox-box.p-highlight {
+  background: #fbbf24 !important;
+  border-color: #fbbf24 !important;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon {
+  color: #000000 !important;
+}
+
+/* Дополнительные стили для иконки */
+.p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon.pi-check:before {
+  color: #000000 !important;
+}
+
+/* Кастомный чекбокс */
+.custom-checkbox .p-checkbox-box {
+  background-color: #374151 !important; /* gray-700 */
+  border-color: #4b5563 !important; /* gray-600 */
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.custom-checkbox .p-checkbox-box.p-highlight {
+  background-color: #fbbf24 !important; /* yellow-400 */
+  border-color: #fbbf24 !important;
+}
+
+.custom-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon {
+  color: #000000 !important; /* черная галочка */
+}
+
+.custom-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon:before {
+  color: #000000 !important; /* черная галочка */
+}
+
