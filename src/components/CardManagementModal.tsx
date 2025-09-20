@@ -155,36 +155,39 @@ const CardManagementModal: React.FC<CardManagementModalProps> = ({
 
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end justify-center">
-      {/* Overlay */}
+    <div className="fixed inset-0 z-[40]">
       <div 
         className="absolute inset-0 bg-black bg-opacity-50"
         onClick={onClose}
       />
-      
-      {/* Modal Content */}
-      <div className="relative w-full max-w-md bg-gray-900 rounded-t-2xl modal-slide-up h-full flex flex-col">
+      <div 
+        className="relative bg-gray-800 w-full h-full overflow-y-auto"
+        style={{ 
+          paddingTop: 'env(safe-area-inset-top, 0)',
+          paddingBottom: 'env(safe-area-inset-bottom, 0)'
+        }}
+      >
         {/* Header */}
-        <div className="flex justify-end p-4">
-          <button
+        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+          <h2 className="text-white text-lg font-semibold">Управление картой</h2>
+          <button 
             onClick={onClose}
-            className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center"
+            className="text-gray-400 hover:text-white transition-colors"
           >
-            <i className="pi pi-times text-white text-sm"></i>
+            <i className="pi pi-times text-xl"></i>
           </button>
         </div>
-
-        {/* Fixed Content - Card and Buttons */}
-        <div className="px-6 pb-4">
+        
+        <div className="p-6 space-y-6" style={{ paddingBottom: '120px' }}>
           {/* Card Swipe Container */}
           <div 
             ref={cardRef}
-            className="relative overflow-hidden mb-4"
+            className="relative overflow-hidden"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <div className="bg-gradient-to-r from-gray-800 to-gray-700 rounded-2xl p-6 mb-2">
+            <div className="bg-gradient-to-r from-gray-800 to-gray-700 rounded-2xl p-6 mb-4">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
                 <div className="w-8 h-8 bg-white rounded-full mr-3"></div>
@@ -232,7 +235,7 @@ const CardManagementModal: React.FC<CardManagementModalProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 mb-4">
+          <div className="flex gap-3">
             <button
               onClick={onTopUp}
               className="flex-1 bg-gray-700 text-white py-3 px-4 rounded-lg hover:bg-gray-600 transition-colors"
@@ -250,7 +253,7 @@ const CardManagementModal: React.FC<CardManagementModalProps> = ({
           {/* Referral Section */}
           <div 
             onClick={() => setIsReferralModalOpen(true)}
-            className="bg-gray-700 rounded-lg p-4 mb-4 hover:bg-gray-600 transition-colors cursor-pointer"
+            className="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer"
           >
             <div className="flex items-center">
               <div className="w-8 h-8 border-2 border-white rounded-full mr-3 flex items-center justify-center">
@@ -262,10 +265,8 @@ const CardManagementModal: React.FC<CardManagementModalProps> = ({
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Scrollable Transactions Section */}
-        <div className="flex-1 overflow-y-auto px-6 pb-6">
+          {/* Recent Transactions */}
           <div>
             <h3 className="text-white text-lg font-semibold mb-4">Последние операции</h3>
             
