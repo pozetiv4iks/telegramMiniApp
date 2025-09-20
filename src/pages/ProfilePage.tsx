@@ -26,7 +26,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
   const [personalInfoModalVisible, setPersonalInfoModalVisible] = useState(false)
   const [emailEditModalVisible, setEmailEditModalVisible] = useState(false)
-  const [email, setEmail] = useState('test@gmail.com')
   const [lastName, setLastName] = useState('')
   const [firstName, setFirstName] = useState('')
   const [patronymic, setPatronymic] = useState('')
@@ -100,7 +99,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                 <div className="mb-4">
                   <label className="block mb-2 font-medium text-gray-300">Email:</label>
                   <InputText
-                    value={email}
                     disabled
                     placeholder="Введите email"
                     className="w-full bg-gray-600 text-gray-400 border-gray-500 cursor-not-allowed"
@@ -259,7 +257,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                   </button>
                 </div>
                 <InputText
-                  value={email}
                   disabled
                   className="w-full bg-gray-600 text-gray-400 border-gray-500 cursor-not-allowed personal-info-input"
                 />
