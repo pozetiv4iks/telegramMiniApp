@@ -25,14 +25,19 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  /* Убираем отступы для правильной работы с status bar */
+  height: 100vh;
+  overflow: hidden;
 }
 
 #root {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #ffffff !important;
   color: #000000 !important;
+  /* Контент начинается сразу после status bar */
+  padding-top: env(safe-area-inset-top, 0);
 }
 
 /* Принудительная светлая тема для всех div элементов */
