@@ -49,7 +49,7 @@ const HomePage: React.FC<HomePageProps> = ({ currentPage, setCurrentPage }) => {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gray-900 overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: '#111827' }}>
       {/* Основной контент с учетом status bar */}
       <div className="flex-1 overflow-y-auto" style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}>
         <div className="p-4 pb-20">

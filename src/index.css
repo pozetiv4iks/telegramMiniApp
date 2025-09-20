@@ -4,13 +4,13 @@
 
 /* Telegram WebApp переменные - темная тема */
 :root {
-  --tg-theme-bg-color: #1a1a1a !important;
+  --tg-theme-bg-color: #111827 !important;
   --tg-theme-text-color: #ffffff !important;
   --tg-theme-hint-color: #999999 !important;
   --tg-theme-link-color: #2481cc !important;
   --tg-theme-button-color: #ffd700 !important;
   --tg-theme-button-text-color: #000000 !important;
-  --tg-theme-secondary-bg-color: #2a2a2a !important;
+  --tg-theme-secondary-bg-color: #111827 !important;
 }
 
 /* Принудительная темная тема для всех элементов */
@@ -23,7 +23,7 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #1a1a1a !important;
+  background-color: #111827 !important;
   color: #ffffff !important;
   color-scheme: dark !important;
   margin: 0;
@@ -38,7 +38,7 @@ html, body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #1a1a1a !important;
+  background-color: #111827 !important;
   color: #ffffff !important;
   /* Контент начинается сразу после status bar */
   padding-top: env(safe-area-inset-top, 0);
@@ -49,22 +49,33 @@ div {
   color-scheme: dark !important;
 }
 
-/* Кастомные стили для Bottom Navigation TabView - темная тема */
+/* Кастомные стили для Bottom Navigation - темная тема */
+.bottom-navigation-tabs {
+  width: 100% !important;
+  height: 110px !important;
+}
+
 .bottom-navigation-tabs .p-tabview-nav {
   display: flex !important;
-  justify-content: space-between !important;
-  background: #2a2a2a !important;
+  justify-content: space-around !important;
+  background: #111827 !important;
   border: none !important;
   padding: 0 !important;
   padding-bottom: env(safe-area-inset-bottom, 0) !important;
+  width: 100% !important;
+  height: 100% !important;
+  align-items: center !important;
 }
 
-.bottom-navigation-tabs .p-tabview-nav li {
+.bottom-navigation-tabs .p-tabview-nav-item {
   flex: 1 !important;
   margin: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
-.bottom-navigation-tabs .p-tabview-nav li .p-tabview-nav-link {
+.bottom-navigation-tabs .p-tabview-nav-item .p-tabview-nav-link {
   border: none !important;
   background: transparent !important;
   padding: 0 !important;
@@ -72,27 +83,36 @@ div {
   border-radius: 0 !important;
   width: 100% !important;
   justify-content: center !important;
+  align-items: center !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-.bottom-navigation-tabs .p-tabview-nav li .p-tabview-nav-link:focus {
+.bottom-navigation-tabs .p-tabview-nav-item .p-tabview-nav-link:focus {
   box-shadow: none !important;
 }
 
-.bottom-navigation-tabs .p-tabview-panels {
+/* Активный элемент - белый цвет */
+.bottom-navigation-tabs .p-tabview-nav-item.p-highlight .p-tabview-nav-link .p-tabview-title {
+  color: #ffffff !important;
+}
+
+.bottom-navigation-tabs .p-tabview-nav-item.p-highlight .p-tabview-nav-link i {
+  color: #ffffff !important;
+}
+
+/* Неактивные элементы - серый цвет */
+.bottom-navigation-tabs .p-tabview-nav-item .p-tabview-nav-link .p-tabview-title {
+  color: #8c8c8c !important;
+}
+
+.bottom-navigation-tabs .p-tabview-nav-item .p-tabview-nav-link i {
+  color: #8c8c8c !important;
+}
+
+/* Убираем черную полосу (home indicator) */
+.bottom-navigation-tabs::after {
   display: none !important;
-}
-
-.bottom-navigation-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-  background: transparent !important;
-  border: none !important;
-}
-
-.bottom-navigation-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link .p-tabview-title {
-  color: #ffd700 !important;
-}
-
-.bottom-navigation-tabs .p-tabview-nav li .p-tabview-nav-link .p-tabview-title {
-  color: #999999 !important;
 }
 
 /* Кастомные стили для основного TabView */
