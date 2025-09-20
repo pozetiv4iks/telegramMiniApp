@@ -91,3 +91,55 @@ export interface TransactionsResponse {
   success: boolean;
   data: Transaction[];
 }
+
+export interface Currency {
+  code: string;
+  symbol: string;
+}
+
+export interface SubAccount {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  nick_name: string;
+  balance: number;
+  wallet_id: string;
+  program_id: string;
+  status: string;
+  type: string;
+  currency: Currency;
+  cards: Card[];
+  metadata: Record<string, any>;
+}
+
+export interface SubAccountResponse {
+  success: boolean;
+  data: SubAccount;
+  message: string;
+}
+
+export interface Pagination {
+  offset: number;
+  limit: number;
+  total: number;
+}
+
+export interface SubTransaction {
+  id: string;
+  created_at: string;
+  type: string;
+  amount: number;
+  balance_after: number;
+  description: string;
+  reference_id: string;
+  status: string;
+  sub_account_id: string;
+  card_id: string;
+  metadata: Record<string, any>;
+}
+
+export interface SubTransactionsResponse {
+  success: boolean;
+  data: SubTransaction[];
+  pagination: Pagination;
+}

@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Button } from 'primereact/button'
 import WebApp from '@twa-dev/sdk'
 import ReferralModal from '../components/ReferralModal'
+import CardIssueModal from '../components/CardIssueModal'
 import { Card } from '../types/card'
 
 interface User {
@@ -14,13 +15,28 @@ interface User {
 
 interface HomePageProps {
   user: User | null
+  onCloseModals?: (closeFunction: () => void) => void
 }
 
 
-const HomePage: React.FC<HomePageProps> = ({ user }) => {
+const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
   // Используем user для отображения имени в заголовке
   const userName = user?.first_name || 'Пользователь'
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
+  const [isCardIssueModalOpen, setIsCardIssueModalOpen] = useState(false)
+  
+  // Функция закрытия всех модалок
+  const closeAllModals = useCallback(() => {
+    setIsReferralModalOpen(false)
+    setIsCardIssueModalOpen(false)
+  }, [])
+  
+  // Передаем функцию закрытия модалок в родительский компонент
+  React.useEffect(() => {
+    if (onCloseModals) {
+      onCloseModals(closeAllModals)
+    }
+  }, [onCloseModals, closeAllModals])
   
   // Моковые данные карточек
   const cards: Card[] = [
@@ -207,7 +223,7 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
                 {/* Информация о карте */}
                 <div className="flex-1">
                   <h3 className="text-white text-lg font-medium">Виртуальная карта</h3>
-                  <p className="text-gray-300 text-sm">Mastercard</p>
+                  <p className="text-gray-300 text-sm">Mastercard , Visa</p>
                   <div className="flex items-center mt-2">
                     <span className="text-gray-300 text-sm">Стоимость:</span>
                     <span className="text-white text-xl font-bold ml-2">$10</span>
@@ -217,7 +233,7 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
               
               {/* Кнопка действия */}
               <button 
-                onClick={() => alert('Карта выбрана!')}
+                onClick={() => setIsCardIssueModalOpen(true)}
                 className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
               >
                 Выбрать карту
@@ -297,6 +313,12 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
       <ReferralModal 
         isOpen={isReferralModalOpen}
         onClose={() => setIsReferralModalOpen(false)}
+      />
+
+      {/* Card Issue Modal */}
+      <CardIssueModal 
+        isOpen={isCardIssueModalOpen}
+        onClose={() => setIsCardIssueModalOpen(false)}
       />
     </div>
   )

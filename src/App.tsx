@@ -18,6 +18,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home')
   const [user, setUser] = useState(mockUser)
   const [isLoading, setIsLoading] = useState(true)
+  const [closeModalsRef, setCloseModalsRef] = useState<(() => void) | null>(null)
 
   useEffect(() => {
     try {
@@ -66,19 +67,23 @@ function App() {
 
   const handleNavigationClick = (item: any) => {
     setCurrentPage(item.id)
+    // Закрываем все модалки при переходе на главную
+    if (item.id === 'home' && closeModalsRef) {
+      closeModalsRef()
+    }
   }
 
   // Функция для рендера текущей страницы
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'home':
-        return <HomePage user={user} />
+        return <HomePage user={user} onCloseModals={setCloseModalsRef} />
       case 'history':
         return <HistoryPage user={user} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       case 'profile':
         return <ProfilePage user={user} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       default:
-        return <HomePage user={user} />
+        return <HomePage user={user} onCloseModals={setCloseModalsRef} />
     }
   }
 
