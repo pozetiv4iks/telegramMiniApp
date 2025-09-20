@@ -64,9 +64,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
     showSuccess('Почта сохранена')
   }
 
-  const handlePersonalInfoError = () => {
-    showError('Личная информация не сохранена')
-  }
 
   const sidebarContent = (
     <div className="p-4 bg-gray-800 h-full">
