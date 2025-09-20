@@ -15,7 +15,7 @@ class ToastService {
   }
 
   show(message: ToastMessage) {
-    if (this.toastRef.current) {
+    if (this.toastRef?.current) {
       this.toastRef.current.show(message)
     }
   }
@@ -57,7 +57,7 @@ class ToastService {
   }
 
   clear() {
-    if (this.toastRef.current) {
+    if (this.toastRef?.current) {
       this.toastRef.current.clear()
     }
   }

@@ -1,5 +1,3 @@
-import React from 'react'
-
 // PrimeReact иконки для навигации согласно документации
 export const HomeIcon = () => (
   <i className="pi pi-home" style={{ fontSize: '1.5rem' }}></i>
