@@ -6,6 +6,7 @@ import CardIssueModal from '../components/CardIssueModal'
 import EmailActivationModal from '../components/EmailActivationModal'
 import CodeConfirmationModal from '../components/CodeConfirmationModal'
 import TopUpModal from '../components/TopUpModal'
+import CardManagementModal from '../components/CardManagementModal'
 import { Card } from '../types/card'
 
 interface User {
@@ -32,6 +33,8 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
   const [userEmail, setUserEmail] = useState('')
   const [isUserRegistered, setIsUserRegistered] = useState(false) // Состояние регистрации пользователя
   const [isTopUpModalOpen, setIsTopUpModalOpen] = useState(false)
+  const [isCardManagementModalOpen, setIsCardManagementModalOpen] = useState(false)
+  const [selectedCardIndex, setSelectedCardIndex] = useState(0)
   
   // Функция закрытия всех модалок
   const closeAllModals = useCallback(() => {
@@ -40,6 +43,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
     setIsEmailActivationModalOpen(false)
     setIsCodeConfirmationModalOpen(false)
     setIsTopUpModalOpen(false)
+    setIsCardManagementModalOpen(false)
   }, [])
   
   // Передаем функцию закрытия модалок в родительский компонент
@@ -273,7 +277,17 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
                 
                 {/* Кнопка действия */}
                 <button 
-                  onClick={() => console.log(card.status === 'ACTIVE' ? 'Карта активна!' : 'Карта неактивна!')}
+                  onClick={() => {
+                    if (card.status === 'ACTIVE') {
+                      // Находим индекс активной карты
+                      const activeCards = cards.filter(c => c.status === 'ACTIVE')
+                      const cardIndex = activeCards.findIndex(c => c.id === card.id)
+                      setSelectedCardIndex(cardIndex)
+                      setIsCardManagementModalOpen(true)
+                    } else {
+                      console.log('Карта неактивна!')
+                    }
+                  }}
                   className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
                 >
                   {card.status === 'ACTIVE' ? 'Управлять картой' : 'Активировать'}
@@ -376,6 +390,23 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
         onPay={(amount) => {
           console.log(`Пополнение на сумму: $${amount}`)
           setIsTopUpModalOpen(false)
+        }}
+      />
+
+      {/* Card Management Modal */}
+      <CardManagementModal 
+        isOpen={isCardManagementModalOpen}
+        onClose={() => setIsCardManagementModalOpen(false)}
+        cards={cards.filter(c => c.status === 'ACTIVE')}
+        currentCardIndex={selectedCardIndex}
+        onCardChange={setSelectedCardIndex}
+        onTopUp={() => {
+          setIsCardManagementModalOpen(false)
+          setIsTopUpModalOpen(true)
+        }}
+        onNewCard={() => {
+          setIsCardManagementModalOpen(false)
+          setIsCardIssueModalOpen(true)
         }}
       />
     </div>
