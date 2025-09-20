@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { WebApp } from '@twa-dev/sdk'
-import WelcomePage from './components/WelcomePage'
-import Dashboard from './components/Dashboard'
-import Transactions from './components/Transactions'
-import Transfer from './components/Transfer'
-import Profile from './components/Profile'
-import BottomNavigation from './components/BottomNavigation'
+import AppRouter from './components/AppRouter'
 import './App.css'
 
 function App() {
   const [user, setUser] = useState(null)
   const [isReady, setIsReady] = useState(false)
-  const [showWelcome, setShowWelcome] = useState(true)
-  const [activeTab, setActiveTab] = useState('dashboard')
 
   useEffect(() => {
     // Инициализация Telegram WebApp
@@ -35,8 +28,8 @@ function App() {
       }
       
       // Настройка темы
-      WebApp.setHeaderColor('#2481cc')
-      WebApp.setBackgroundColor('#ffffff')
+      WebApp.setHeaderColor('#1a1a1a')
+      WebApp.setBackgroundColor('#1a1a1a')
     } catch (error) {
       console.log('Telegram WebApp not available, using mock data')
       // Для тестирования создаем мокового пользователя
@@ -63,34 +56,6 @@ function App() {
     }
   }, [])
 
-  const handleStartApp = () => {
-    setShowWelcome(false)
-    try {
-      WebApp.HapticFeedback.notificationOccurred('success')
-    } catch (error) {
-      console.log('Haptic feedback not available')
-    }
-  }
-
-  const handleTabChange = (tabId) => {
-    setActiveTab(tabId)
-  }
-
-  const renderActiveTab = () => {
-    switch (activeTab) {
-      case 'dashboard':
-        return <Dashboard user={user} />
-      case 'transactions':
-        return <Transactions />
-      case 'transfer':
-        return <Transfer />
-      case 'profile':
-        return <Profile user={user} />
-      default:
-        return <Dashboard user={user} />
-    }
-  }
-
   if (!isReady) {
     return (
       <div className="app">
@@ -102,18 +67,9 @@ function App() {
     )
   }
 
-  if (showWelcome) {
-    return (
-      <div className="app">
-        <WelcomePage user={user} onStart={handleStartApp} />
-      </div>
-    )
-  }
-
   return (
     <div className="app">
-      {renderActiveTab()}
-      <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
+      <AppRouter user={user} />
     </div>
   )
 }

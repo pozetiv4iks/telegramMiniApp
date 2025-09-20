@@ -2,32 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Telegram WebApp переменные - темная тема */
+/* Telegram WebApp переменные - принудительная темная тема */
 :root {
-  --tg-theme-bg-color: #1a1a1a;
-  --tg-theme-text-color: #ffffff;
-  --tg-theme-hint-color: #b3b3b3;
-  --tg-theme-link-color: #4a9eff;
-  --tg-theme-button-color: #4a9eff;
-  --tg-theme-button-text-color: #ffffff;
-  --tg-theme-secondary-bg-color: #2d2d2d;
+  --tg-theme-bg-color: #1a1a1a !important;
+  --tg-theme-text-color: #ffffff !important;
+  --tg-theme-hint-color: #b3b3b3 !important;
+  --tg-theme-link-color: #4a9eff !important;
+  --tg-theme-button-color: #4a9eff !important;
+  --tg-theme-button-text-color: #ffffff !important;
+  --tg-theme-secondary-bg-color: #2d2d2d !important;
 }
 
-/* Базовые стили - темная тема */
+/* Принудительная темная тема для всех элементов */
+* {
+  color-scheme: dark !important;
+}
+
+/* Базовые стили - принудительная темная тема */
 @layer base {
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  html, body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--tg-theme-bg-color, #1a1a1a);
-    color: var(--tg-theme-text-color, #ffffff);
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+    color-scheme: dark !important;
   }
   
   #root {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: var(--tg-theme-bg-color, #1a1a1a);
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+  }
+  
+  /* Принудительная темная тема для всех div элементов */
+  div {
+    color-scheme: dark !important;
   }
 }
 

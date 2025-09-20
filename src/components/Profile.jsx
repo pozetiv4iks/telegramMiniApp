@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { WebApp } from '@twa-dev/sdk'
 
 const Profile = ({ user }) => {
+  const navigate = useNavigate()
   const [settings] = useState({
     notifications: true,
     biometric: false,
@@ -9,16 +11,28 @@ const Profile = ({ user }) => {
   })
 
   const menuItems = [
-    { id: 'cards', title: 'Мои карты', icon: '💳', color: 'bg-blue-500' },
-    { id: 'limits', title: 'Лимиты', icon: '🛡️', color: 'bg-green-500' },
-    { id: 'security', title: 'Безопасность', icon: '🔒', color: 'bg-red-500' },
-    { id: 'support', title: 'Поддержка', icon: '💬', color: 'bg-purple-500' },
-    { id: 'about', title: 'О приложении', icon: 'ℹ️', color: 'bg-gray-500' },
+    { id: 'cards', title: 'Мои карты', icon: '💳', color: 'bg-blue-500', path: '/cards' },
+    { id: 'analytics', title: 'Аналитика', icon: '📊', color: 'bg-green-500', path: '/analytics' },
+    { id: 'settings', title: 'Настройки', icon: '⚙️', color: 'bg-gray-500', path: '/settings' },
+    { id: 'support', title: 'Поддержка', icon: '💬', color: 'bg-purple-500', path: '/support' },
   ]
 
   const handleMenuItemClick = (item) => {
-    WebApp.HapticFeedback.impactOccurred('medium')
-    WebApp.showAlert(`Открыт раздел: ${item.title}`)
+    try {
+      WebApp.HapticFeedback.impactOccurred('medium')
+      if (item.path) {
+        navigate(item.path)
+      } else {
+        WebApp.showAlert(`Открыт раздел: ${item.title}`)
+      }
+    } catch (error) {
+      console.log('WebApp methods not available')
+      if (item.path) {
+        navigate(item.path)
+      } else {
+        alert(`Открыт раздел: ${item.title}`)
+      }
+    }
   }
 
   const handleLogout = () => {

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { WebApp } from '@twa-dev/sdk'
 
 const Dashboard = ({ user }) => {
+  console.log('Dashboard rendered with user:', user)
+  
   const [balance] = useState(12580.50)
   const [transactions] = useState([
     { id: 1, type: 'income', amount: 2500, description: 'Зарплата', date: '2024-01-15', icon: '💰' },
