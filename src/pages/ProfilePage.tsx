@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import { Card } from 'primereact/card'
 import { Avatar } from 'primereact/avatar'
 import Button from '../components/Button'
 import InputText from '../components/InputText'
-import Checkbox from '../components/Checkbox'
 import Dropdown from '../components/Dropdown'
 import Sidebar from '../components/Sidebar'
 import BottomNavigation from '../components/BottomNavigation'
@@ -25,8 +23,6 @@ interface ProfilePageProps {
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrentPage }) => {
   const [sidebarVisible, setSidebarVisible] = useState(false)
-  const [notifications, setNotifications] = useState(true)
-  const [darkMode, setDarkMode] = useState(false)
   const [language, setLanguage] = useState('ru')
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
 
@@ -44,10 +40,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
 
   const handleNavigationClick = (item: any) => {
     setCurrentPage(item.id)
-  }
-
-  const handleEditProfile = () => {
-    setSidebarVisible(true)
   }
 
   const sidebarContent = (
