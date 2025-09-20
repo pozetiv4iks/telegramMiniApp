@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from 'primereact/button'
 import WebApp from '@twa-dev/sdk'
+import ReferralModal from '../components/ReferralModal'
 
 interface User {
   id: number
@@ -17,6 +18,7 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ user }) => {
   // Используем user для отображения имени в заголовке
   const userName = user?.first_name || 'Пользователь'
+  const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
 
   // Функция для тестирования Telegram WebApp API
   const testTelegramAPI = () => {
@@ -57,7 +59,7 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
                   <div className="w-2 h-1 bg-white rounded"></div>
                   <div className="w-2 h-1 bg-white rounded"></div>
                   <div className="w-2 h-1 bg-white rounded"></div>
-                </div>
+        </div>
                 <div className="flex justify-center">
                   <div className="w-6 h-4 border border-white rounded flex items-center justify-center">
                     <div className="w-3 h-3 border border-white rounded-full"></div>
@@ -80,7 +82,7 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
                   <span className="text-white text-xl font-bold ml-2">$10</span>
                 </div>
               </div>
-            </div>
+        </div>
             
             {/* Кнопка выбора карты */}
             <button 
@@ -92,19 +94,22 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
           </div>
 
           {/* Секция реферальной программы */}
-          <div className="bg-gray-700 rounded-lg p-4">
+          <button 
+            onClick={() => setIsReferralModalOpen(true)}
+            className="w-full bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors"
+          >
             <div className="flex items-center">
               {/* Иконка друзей */}
               <div className="w-8 h-8 border-2 border-white rounded-full mr-3 flex items-center justify-center">
                 <i className="pi pi-users text-white text-sm"></i>
               </div>
               
-              <div className="flex-1">
+              <div className="flex-1 text-left">
                 <p className="text-white font-medium">Приглашай друзей и получай бонусы!</p>
                 <p className="text-gray-300 text-sm mt-1">Твоя персональная ссылка здесь</p>
               </div>
             </div>
-          </div>
+          </button>
 
           {/* Тестовые кнопки */}
           <div className="mt-6 flex gap-2 justify-center">
@@ -124,6 +129,11 @@ const HomePage: React.FC<HomePageProps> = ({ user }) => {
         </div>
       </div>
 
+      {/* Referral Modal */}
+      <ReferralModal 
+        isOpen={isReferralModalOpen}
+        onClose={() => setIsReferralModalOpen(false)}
+      />
     </div>
   )
 }

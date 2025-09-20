@@ -137,6 +137,33 @@ div {
   display: none !important;
 }
 
+/* Анимация для модального окна */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.modal-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
 /* Кастомные стили для основного TabView */
 .custom-tabview .p-tabview-nav {
   background: #f8f9fa !important;
