@@ -114,13 +114,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
 
         {/* Профиль пользователя */}
         <div className="text-center mb-8">
-          <div className="w-24 h-24 rounded-lg mx-auto mb-4 flex items-center justify-center">
+          <div className="w-32 h-32 rounded-lg mx-auto mb-4 flex items-center justify-center">
             <Avatar 
               image={user?.photo_url} 
               icon="pi pi-user" 
               size="xlarge" 
               shape="circle"
               className="bg-gray-600 text-white"
+              style={{ width: '120px', height: '120px', fontSize: '48px' }}
             />
           </div>
           <h2 className="text-white text-lg font-medium">{user?.first_name} {user?.last_name}</h2>
