@@ -16,20 +16,20 @@ Telegram Mini App built with React, TypeScript, and Vite.
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm package manager
+- Node.js 20+ 
+- Yarn package manager
 
 ### Installation
 
 1. Clone the repository
 2. Install dependencies:
    ```bash
-   npm install
+   yarn install
    ```
 
 3. Start development server:
    ```bash
-   npm run dev
+   yarn dev
    ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
@@ -37,13 +37,13 @@ Telegram Mini App built with React, TypeScript, and Vite.
 ### Building for Production
 
 ```bash
-npm run build
+yarn build
 ```
 
 ### Preview Production Build
 
 ```bash
-npm run preview
+yarn preview
 ```
 
 ## Project Structure
@@ -79,7 +79,7 @@ The project is optimized for Cloudflare Pages deployment:
 
 ### Manual Deployment
 
-1. Build the project: `npm run build`
+1. Build the project: `yarn build`
 2. Upload the `dist` folder to your hosting provider
 
 ## Development
