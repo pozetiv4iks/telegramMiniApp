@@ -1,15 +1,25 @@
 import React, { useState } from 'react'
 import BottomNavigation from '../components/BottomNavigation'
 import { Transaction } from '../types/card'
+import { User } from '../types/user'
+
+interface TelegramUser {
+  id: number
+  first_name: string
+  last_name?: string
+  username?: string
+  photo_url?: string
+}
 
 interface HistoryPageProps {
-  user: any
+  user: TelegramUser | null
+  appUser?: User | null
   currentPage: string
   setCurrentPage: (page: string) => void
 }
 
 
-const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, setCurrentPage }) => {
+const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, appUser, currentPage, setCurrentPage }) => {
   const [activeFilter, setActiveFilter] = useState('all')
   const [showOperationFilter, setShowOperationFilter] = useState(false)
   const [selectedOperation, setSelectedOperation] = useState('all')

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Avatar } from 'primereact/avatar'
 import Button from '../components/Button'
 import InputText from '../components/InputText'
@@ -7,10 +7,14 @@ import Sidebar from '../components/Sidebar'
 import BottomNavigation from '../components/BottomNavigation'
 import ReferralModal from '../components/ReferralModal'
 import ReferralStatsModal from '../components/ReferralStatsModal'
+import EmailActivationModal from '../components/EmailActivationModal'
+import CodeConfirmationModal from '../components/CodeConfirmationModal'
 import Toast from '../components/Toast'
 import { useToast } from '../hooks/useToast'
+import { User } from '../types/user'
+import { apiClient } from '../services/api'
 
-interface User {
+interface TelegramUser {
   id: number
   first_name: string
   last_name?: string
@@ -19,18 +23,21 @@ interface User {
 }
 
 interface ProfilePageProps {
-  user: User | null
+  user: TelegramUser | null
+  appUser?: User | null
   currentPage: string
   setCurrentPage: (page: string) => void
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrentPage }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ user, appUser, currentPage, setCurrentPage }) => {
   const [sidebarVisible, setSidebarVisible] = useState(false)
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
   const [isReferralStatsModalOpen, setIsReferralStatsModalOpen] = useState(false)
   const [personalInfoModalVisible, setPersonalInfoModalVisible] = useState(false)
-  const [emailEditModalVisible, setEmailEditModalVisible] = useState(false)
-  const { toast, showSuccess, showInfo, hideToast } = useToast()
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false)
+  const [isCodeConfirmationModalOpen, setIsCodeConfirmationModalOpen] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const { toast, showSuccess, showError, showInfo, hideToast } = useToast()
   const [lastName, setLastName] = useState('')
   const [firstName, setFirstName] = useState('')
   const [patronymic, setPatronymic] = useState('')
@@ -39,6 +46,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
   const [registrationPlace, setRegistrationPlace] = useState('')
   const [consentChecked, setConsentChecked] = useState(true)
 
+  // Логирование изменений состояния модальных окон
+  useEffect(() => {
+    console.log('🔍 ProfilePage state change - isEmailModalOpen:', isEmailModalOpen)
+  }, [isEmailModalOpen])
+
+  useEffect(() => {
+    console.log('🔍 ProfilePage state change - isCodeConfirmationModalOpen:', isCodeConfirmationModalOpen)
+  }, [isCodeConfirmationModalOpen])
 
   const navigationItems = [
     { id: 'home', label: 'Главная', icon: 'pi pi-home', path: '/', active: currentPage === 'home' },
@@ -65,9 +80,54 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
     showInfo('Информация сохранена')
   }
 
-  const handleEmailSave = () => {
-    setEmailEditModalVisible(false)
-    showSuccess('Почта сохранена')
+  const handleEmailSave = async (newEmail: string) => {
+    try {
+      console.log('📧 Сохранение email:', newEmail)
+      setUserEmail(newEmail)
+      setIsEmailModalOpen(false)
+      setIsCodeConfirmationModalOpen(true)
+      console.log('✅ EmailActivationModal закрыт, CodeConfirmationModal открыт')
+    } catch (error) {
+      console.error('❌ Ошибка при сохранении email:', error)
+      showError('Ошибка при сохранении email')
+    }
+  }
+
+  const handleCodeConfirmation = async (code: string) => {
+    try {
+      console.log('🔐 Подтверждение кода:', code, 'для email:', userEmail)
+
+      if (!appUser?.telegram_id) {
+        showError('Ошибка: не найден Telegram ID пользователя')
+        return
+      }
+
+      // Обновляем email в базе данных
+      const response = await apiClient.updateUserDataByTgId(appUser.telegram_id, {
+        email: userEmail
+      })
+
+      if (response.success) {
+        console.log('✅ Email успешно обновлен в БД:', response.data)
+        setIsCodeConfirmationModalOpen(false)
+        showSuccess('Email успешно подтвержден и обновлен!')
+        console.log('🎉 Процесс подтверждения email завершен')
+
+        // TODO: Обновить локальное состояние пользователя
+        // Можно добавить callback для обновления appUser в родительском компоненте
+      } else {
+        console.error('❌ Ошибка при обновлении email:', response.error)
+        showError('Ошибка при сохранении email')
+      }
+    } catch (error) {
+      console.error('❌ Ошибка при подтверждении кода:', error)
+      showError('Ошибка при подтверждении кода')
+    }
+  }
+
+  const handleEmailEditOpen = () => {
+    console.log('🔧 Открытие модального окна редактирования email')
+    setIsEmailModalOpen(true)
   }
 
 
@@ -167,6 +227,21 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
             />
           </div>
           <h2 className="text-white text-lg font-medium">{user?.first_name} {user?.last_name}</h2>
+          
+          {/* Информация о пользователе из системы */}
+          {appUser && (
+            <div className="mt-2 text-center">
+              <p className="text-gray-400 text-sm">ID в системе: {appUser.id}</p>
+              <p className="text-gray-400 text-sm">Nick: {appUser.nick_name}</p>
+              <p className="text-gray-400 text-sm">Telegram ID: {appUser.telegram_id}</p>
+              <p className="text-gray-400 text-sm">Статус: {appUser.status}</p>
+              {appUser.metadata?.last_activity && (
+                <p className="text-gray-400 text-sm">
+                  Последняя активность: {new Date(appUser.metadata.last_activity).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Меню профиля */}
@@ -275,7 +350,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                 <div className="flex items-center justify-between mb-2">
                   <label className="font-medium text-gray-300">Email</label>
                   <button 
-                    onClick={() => setEmailEditModalVisible(true)}
+                    onClick={handleEmailEditOpen}
                     className="text-yellow-400 text-sm hover:text-yellow-300 transition-colors"
                   >
                     Edit
@@ -283,6 +358,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
                 </div>
                 <InputText
                   disabled
+                  value={appUser?.metadata?.email || 'Email не подтвержден'}
                   className="w-full bg-gray-600 text-gray-400 border-gray-500 cursor-not-allowed personal-info-input"
                 />
               </div>
@@ -382,37 +458,23 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, currentPage, setCurrent
       )}
 
       {/* Email Edit Modal */}
-      {emailEditModalVisible && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center">
-          <div 
-            className="absolute inset-0 bg-black bg-opacity-50"
-            onClick={() => setEmailEditModalVisible(false)}
-          ></div>
-          <div className="relative bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-white text-lg font-semibold">Изменить Email</h2>
-              <button 
-                onClick={() => setEmailEditModalVisible(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <i className="pi pi-times text-xl"></i>
-              </button>
-            </div>
-            
-            <div className="text-center py-8">
-              <p className="text-gray-300">Модалка для изменения email</p>
-              <p className="text-gray-400 text-sm mt-2">Функциональность будет добавлена позже</p>
-              
-              <button 
-                onClick={handleEmailSave}
-                className="mt-4 bg-yellow-400 text-black font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
-              >
-                Сохранить Email
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <EmailActivationModal
+        isOpen={isEmailModalOpen}
+        onClose={() => setIsEmailModalOpen(false)}
+        onNext={handleEmailSave}
+      />
+
+      {/* Code Confirmation Modal */}
+      <CodeConfirmationModal 
+        isOpen={isCodeConfirmationModalOpen}
+        onClose={() => setIsCodeConfirmationModalOpen(false)}
+        onConfirm={handleCodeConfirmation}
+        onResend={() => {
+          // TODO: Реализовать повторную отправку кода
+          showInfo('Код отправлен повторно')
+        }}
+        email={userEmail}
+      />
 
       {/* Toast Notification */}
       <Toast

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
+import { Card } from '../services/api'
 
 interface TopUpModalProps {
   isOpen: boolean
   onClose: () => void
   onPay: (amount: number) => void
+  cards?: Card[]
+  isLoadingCards?: boolean
 }
 
-const TopUpModal: React.FC<TopUpModalProps> = ({ isOpen, onClose, onPay }) => {
+const TopUpModal: React.FC<TopUpModalProps> = ({ isOpen, onClose, onPay, cards = [], isLoadingCards = false }) => {
   const [amount, setAmount] = useState(5)
   const [consentChecked, setConsentChecked] = useState(true)
 
@@ -51,6 +54,39 @@ const TopUpModal: React.FC<TopUpModalProps> = ({ isOpen, onClose, onPay }) => {
             <p className="text-gray-400 text-sm">
               Введите сумму и выберите способ пополнения
             </p>
+          </div>
+
+          {/* Cards Section */}
+          <div className="mb-6">
+            <h3 className="text-white text-lg font-medium mb-3">Ваши карты</h3>
+            {isLoadingCards ? (
+              <div className="text-center py-4">
+                <div className="text-gray-400">Загрузка карт...</div>
+              </div>
+            ) : cards.length > 0 ? (
+              <div className="space-y-3">
+                {cards.map((card, index) => (
+                  <div key={card.id} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-white font-medium">{card.title}</div>
+                        <div className="text-gray-400 text-sm">{card.brand} •••• {card.last4}</div>
+                        <div className="text-gray-400 text-sm">Истекает: {card.expiration_date_short}</div>
+                        <div className="text-gray-400 text-sm">Статус: {card.status}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-yellow-400 font-medium">${card.spent_amount || '0.00'}</div>
+                        <div className="text-gray-400 text-xs">Баланс</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-4">
+                <div className="text-gray-400">У вас пока нет карт</div>
+              </div>
+            )}
           </div>
 
           {/* Amount Input */}

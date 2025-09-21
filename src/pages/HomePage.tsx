@@ -8,9 +8,10 @@ import CodeConfirmationModal from '../components/CodeConfirmationModal'
 import TopUpModal from '../components/TopUpModal'
 import CardManagementModal from '../components/CardManagementModal'
 import PaymentModal from '../components/PaymentModal'
-import { Card } from '../types/card'
+import { User } from '../types/user'
+import { apiClient, Card } from '../services/api'
 
-interface User {
+interface TelegramUser {
   id: number
   first_name: string
   last_name?: string
@@ -19,25 +20,71 @@ interface User {
 }
 
 interface HomePageProps {
-  user: User | null
+  user: TelegramUser | null
+  appUser?: User | null
+  isNewUser?: boolean
   onCloseModals?: (closeFunction: () => void) => void
 }
 
 
-const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
+const HomePage: React.FC<HomePageProps> = ({ user, appUser, isNewUser, onCloseModals }) => {
   // Используем user для отображения имени в заголовке
   const userName = user?.first_name || 'Пользователь'
+  
+  // Логируем информацию о пользователе
+  React.useEffect(() => {
+    if (appUser) {
+      console.log('🏠 HomePage: Данные пользователя из системы:', {
+        id: appUser.id,
+        nick_name: appUser.nick_name,
+        telegram_id: appUser.telegram_id,
+        isNewUser: isNewUser,
+        status: appUser.status
+      })
+      
+      if (isNewUser) {
+        console.log('🎉 Добро пожаловать, новый пользователь!')
+      }
+    }
+  }, [appUser, isNewUser])
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false)
   const [isCardIssueModalOpen, setIsCardIssueModalOpen] = useState(false)
   const [isEmailActivationModalOpen, setIsEmailActivationModalOpen] = useState(false)
   const [isCodeConfirmationModalOpen, setIsCodeConfirmationModalOpen] = useState(false)
   const [userEmail, setUserEmail] = useState('')
-  const [isUserRegistered, setIsUserRegistered] = useState(false) // Состояние регистрации пользователя
+  // const [isUserRegistered, setIsUserRegistered] = useState(false) // Состояние регистрации пользователя
   const [isTopUpModalOpen, setIsTopUpModalOpen] = useState(false)
   const [isCardManagementModalOpen, setIsCardManagementModalOpen] = useState(false)
   const [selectedCardIndex, setSelectedCardIndex] = useState(0)
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
   const [paymentAmount, setPaymentAmount] = useState(0)
+  const [userCards, setUserCards] = useState<Card[]>([])
+  const [isLoadingCards, setIsLoadingCards] = useState(false)
+  
+  // Функция получения карт пользователя
+  const fetchUserCards = async () => {
+    try {
+      setIsLoadingCards(true)
+      console.log('🃏 Получение карт пользователя...')
+      
+      const response = await apiClient.getCards({
+        program_id: 'bbcaff9a-dfdc-4274-a8e5-b65733b8a4e7' // Используем заглушку program_id
+      })
+      
+      if (response.success && response.data) {
+        console.log('✅ Карты получены:', response.data)
+        setUserCards(response.data)
+      } else {
+        console.error('❌ Ошибка при получении карт:', response.error)
+        setUserCards([])
+      }
+    } catch (error) {
+      console.error('❌ Ошибка при получении карт:', error)
+      setUserCards([])
+    } finally {
+      setIsLoadingCards(false)
+    }
+  }
   
   // Функция закрытия всех модалок
   const closeAllModals = useCallback(() => {
@@ -57,147 +104,6 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
     }
   }, [onCloseModals, closeAllModals])
   
-  // Моковые данные карточек
-  const cards: Card[] = [
-    {
-      id: "79a59b14-23e5-42c8-848c-ff8fa9850b8d",
-      title: "Виртуальная карта Mastercard",
-      last4: "4242",
-      expiration_date: "2028-09-20T18:37:25.129",
-      expiration_date_short: "09/28",
-      form_factor: "VIRTUAL",
-      status: "ACTIVE",
-      currency: "USD",
-      created_at: "2025-09-20T18:11:27.060218+00:00",
-      updated_at: "2025-09-20T18:37:25.725022+00:00",
-      sub_account_id: "ae8cf7e1-9481-441f-9294-85a8b7addaea",
-      vendor_sub_account_id: "badacad1-5664-4d90-b215-89ab87f00e0b",
-      brand: "MASTERCARD",
-      vendor_id: "98121811-debb-409e-83da-db8512f33253",
-      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627dc",
-      tokenizable: true,
-      spend_cap: 0,
-      spent_amount: 0,
-      card_name: "Test Card 1",
-      email: "user@example.com",
-      mobile: "+1234567890",
-      type: "balance",
-      wallet_id: "8205c701-cd41-4929-910f-fccbb949729a",
-      program_id: "dbb74408-0318-401c-ac5d-72e522fa8aaa",
-      limits: {
-        all_time_enabled: false,
-        all_time_cap: 0,
-        all_time_spent: 0,
-        daily_enabled: true,
-        daily_cap: 1000,
-        daily_spent: 0,
-        weekly_enabled: false,
-        weekly_cap: 0,
-        weekly_spent: 0,
-        monthly_enabled: true,
-        monthly_cap: 10000,
-        monthly_spent: 0,
-        yearly_enabled: false,
-        yearly_cap: 0,
-        yearly_spent: 0,
-        per_transaction_enabled: true,
-        per_transaction_cap: 500,
-        per_transaction_spent: 0
-      }
-    },
-    {
-      id: "79a59b14-23e5-42c8-848c-ff8fa9850b8e",
-      title: "Виртуальная карта Visa",
-      last4: "1234",
-      expiration_date: "2029-12-15T10:30:00.000",
-      expiration_date_short: "12/29",
-      form_factor: "VIRTUAL",
-      status: "ACTIVE",
-      currency: "USD",
-      created_at: "2025-09-20T18:11:27.060218+00:00",
-      updated_at: "2025-09-20T18:37:25.725022+00:00",
-      sub_account_id: "ae8cf7e1-9481-441f-9294-85a8b7addaea",
-      vendor_sub_account_id: "badacad1-5664-4d90-b215-89ab87f00e0b",
-      brand: "VISA",
-      vendor_id: "98121811-debb-409e-83da-db8512f33253",
-      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627dd",
-      tokenizable: true,
-      spend_cap: 0,
-      spent_amount: 150.50,
-      card_name: "Test Card 2",
-      email: "user@example.com",
-      mobile: "+1234567890",
-      type: "balance",
-      wallet_id: "8205c701-cd41-4929-910f-fccbb949729a",
-      program_id: "dbb74408-0318-401c-ac5d-72e522fa8aaa",
-      limits: {
-        all_time_enabled: false,
-        all_time_cap: 0,
-        all_time_spent: 0,
-        daily_enabled: true,
-        daily_cap: 1000,
-        daily_spent: 150.50,
-        weekly_enabled: false,
-        weekly_cap: 0,
-        weekly_spent: 0,
-        monthly_enabled: true,
-        monthly_cap: 10000,
-        monthly_spent: 150.50,
-        yearly_enabled: false,
-        yearly_cap: 0,
-        yearly_spent: 0,
-        per_transaction_enabled: true,
-        per_transaction_cap: 500,
-        per_transaction_spent: 0
-      }
-    },
-    {
-      id: "79a59b14-23e5-42c8-848c-ff8fa9850b8f",
-      title: "Виртуальная карта Mastercard",
-      last4: "5678",
-      expiration_date: "2027-06-30T15:45:00.000",
-      expiration_date_short: "06/27",
-      form_factor: "VIRTUAL",
-      status: "ACTIVE",
-      currency: "USD",
-      created_at: "2025-09-20T18:11:27.060218+00:00",
-      updated_at: "2025-09-20T18:37:25.725022+00:00",
-      sub_account_id: "ae8cf7e1-9481-441f-9294-85a8b7addaea",
-      vendor_sub_account_id: "badacad1-5664-4d90-b215-89ab87f00e0b",
-      brand: "MASTERCARD",
-      vendor_id: "98121811-debb-409e-83da-db8512f33253",
-      vendor_card_id: "fc22a5fb-18bb-4a04-bade-e4c1ff8627de",
-      tokenizable: true,
-      spend_cap: 0,
-      spent_amount: 75.25,
-      card_name: "Test Card 3",
-      email: "user@example.com",
-      mobile: "+1234567890",
-      type: "balance",
-      wallet_id: "8205c701-cd41-4929-910f-fccbb949729a",
-      program_id: "dbb74408-0318-401c-ac5d-72e522fa8aaa",
-      limits: {
-        all_time_enabled: false,
-        all_time_cap: 0,
-        all_time_spent: 0,
-        daily_enabled: true,
-        daily_cap: 1000,
-        daily_spent: 75.25,
-        weekly_enabled: false,
-        weekly_cap: 0,
-        weekly_spent: 0,
-        monthly_enabled: true,
-        monthly_cap: 10000,
-        monthly_spent: 75.25,
-        yearly_enabled: false,
-        yearly_cap: 0,
-        yearly_spent: 0,
-        per_transaction_enabled: true,
-        per_transaction_cap: 500,
-        per_transaction_spent: 0
-      }
-    }
-  ]
 
   // Функция для тестирования Telegram WebApp API
   const testTelegramAPI = () => {
@@ -227,6 +133,18 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-white mb-2">Выберите карту</h1>
             <p className="text-gray-300 text-sm">Добро пожаловать, {userName}!</p>
+            
+            {/* Приветственное сообщение для новых пользователей */}
+            {isNewUser && (
+              <div className="mt-4 p-3 bg-green-500/20 border border-green-500/30 rounded-lg">
+                <p className="text-green-400 text-sm font-medium">
+                  🎉 Добро пожаловать в наше приложение!
+                </p>
+                <p className="text-green-300 text-xs mt-1">
+                  Ваш аккаунт успешно создан в системе
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Список карточек */}
@@ -259,7 +177,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
               </button>
             </div>
 
-            {cards.map((card) => (
+            {userCards.map((card) => (
               <div key={card.id} className="bg-gray-800 rounded-lg p-6">
                 <div className="flex items-center mb-4">
                   {/* Иконка карты */}
@@ -284,7 +202,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
                   onClick={() => {
                     if (card.status === 'ACTIVE') {
                       // Находим индекс активной карты
-                      const activeCards = cards.filter(c => c.status === 'ACTIVE')
+                      const activeCards = userCards.filter(c => c.status === 'ACTIVE')
                       const cardIndex = activeCards.findIndex(c => c.id === card.id)
                       setSelectedCardIndex(cardIndex)
                       setIsCardManagementModalOpen(true)
@@ -301,7 +219,7 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
           </div>
 
           {/* Секция реферальной программы - показывается только если карточек 2 или меньше */}
-          {cards.length <= 1 && (
+          {userCards.length <= 1 && (
             <button 
               onClick={() => setIsReferralModalOpen(true)}
               className="w-full bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors"
@@ -348,13 +266,23 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
       <CardIssueModal 
         isOpen={isCardIssueModalOpen}
         onClose={() => setIsCardIssueModalOpen(false)}
-        onNext={() => {
+        onNext={async () => {
           setIsCardIssueModalOpen(false)
-          if (isUserRegistered) {
-            // Если пользователь уже зарегистрирован, переходим к пополнению
+          // Проверяем, есть ли email у пользователя в БД
+          const hasEmail = appUser?.metadata?.email && appUser.metadata.email.trim() !== '' && appUser.metadata.email !== 'Email не подтвержден'
+          
+          console.log('🔍 Проверка email при выборе карты:')
+          console.log('📧 Email пользователя:', appUser?.metadata?.email)
+          console.log('✅ Email валиден:', hasEmail)
+          
+          if (hasEmail) {
+            // Если email есть в БД, получаем карты и переходим к пополнению
+            console.log('✅ Email найден в БД, получаем карты и переходим к пополнению')
+            await fetchUserCards()
             setIsTopUpModalOpen(true)
           } else {
-            // Если не зарегистрирован, переходим к активации
+            // Если email нет в БД, переходим к активации
+            console.log('❌ Email не найден в БД, требуем активацию')
             setIsEmailActivationModalOpen(true)
           }
         }}
@@ -375,11 +303,33 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
       <CodeConfirmationModal 
         isOpen={isCodeConfirmationModalOpen}
         onClose={() => setIsCodeConfirmationModalOpen(false)}
-        onConfirm={() => {
-          console.log('Карта успешно активирована!')
-          setIsUserRegistered(true) // Пользователь теперь зарегистрирован
-          setIsCodeConfirmationModalOpen(false)
-          setIsTopUpModalOpen(true) // Переходим к пополнению
+        onConfirm={async (code) => {
+          try {
+            console.log('Подтверждение кода:', code, 'для email:', userEmail)
+            
+            if (!appUser?.telegram_id) {
+              console.error('❌ Ошибка: не найден Telegram ID пользователя')
+              return
+            }
+
+            // Обновляем email в базе данных
+            const response = await apiClient.updateUserDataByTgId(appUser.telegram_id, {
+              email: userEmail
+            })
+
+            if (response.success) {
+              console.log('✅ Email успешно обновлен в БД:', response.data)
+              // setIsUserRegistered(true) // Пользователь теперь зарегистрирован
+              setIsCodeConfirmationModalOpen(false)
+              // Получаем карты и переходим к пополнению
+              await fetchUserCards()
+              setIsTopUpModalOpen(true)
+            } else {
+              console.error('❌ Ошибка при обновлении email:', response.error)
+            }
+          } catch (error) {
+            console.error('❌ Ошибка при подтверждении кода:', error)
+          }
         }}
         onResend={() => {
           console.log('Код отправлен повторно')
@@ -396,13 +346,15 @@ const HomePage: React.FC<HomePageProps> = ({ user, onCloseModals }) => {
           setIsTopUpModalOpen(false)
           setIsPaymentModalOpen(true)
         }}
+        cards={userCards}
+        isLoadingCards={isLoadingCards}
       />
 
       {/* Card Management Modal */}
       <CardManagementModal 
         isOpen={isCardManagementModalOpen}
         onClose={() => setIsCardManagementModalOpen(false)}
-        cards={cards.filter(c => c.status === 'ACTIVE')}
+        cards={userCards.filter(c => c.status === 'ACTIVE')}
         currentCardIndex={selectedCardIndex}
         onCardChange={setSelectedCardIndex}
         onTopUp={() => {
