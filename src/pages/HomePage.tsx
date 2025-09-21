@@ -59,6 +59,55 @@ const HomePage: React.FC<HomePageProps> = ({ user, appUser, isNewUser, onCloseMo
   const [userCards, setUserCards] = useState<Card[]>([])
   const [isLoadingCards, setIsLoadingCards] = useState(false)
   
+  // Заглушка для карты
+  const mockCard: Card = {
+    id: 'mock-card-1',
+    title: 'Основная карта',
+    brand: 'Visa',
+    last4: '1234',
+    expiration_date: '2025-12-31',
+    expiration_date_short: '12/25',
+    form_factor: 'virtual',
+    status: 'ACTIVE',
+    currency: 'USD',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    sub_account_id: 'mock-sub-account',
+    vendor_sub_account_id: 'mock-vendor-sub',
+    vendor_id: 'mock-vendor',
+    vendor_card_id: 'mock-vendor-card',
+    tokenizable: true,
+    spend_cap: 10000,
+    spent_amount: 0,
+    card_name: 'Основная карта',
+    email: '',
+    mobile: '',
+    type: 'virtual',
+    wallet_id: 'mock-wallet',
+    program_id: 'dbb74408-0318-401c-ac5d-72e522fa8aaa',
+    limits: {
+      all_time_enabled: true,
+      all_time_cap: 100000,
+      all_time_spent: 0,
+      daily_enabled: true,
+      daily_cap: 1000,
+      daily_spent: 0,
+      weekly_enabled: true,
+      weekly_cap: 5000,
+      weekly_spent: 0,
+      monthly_enabled: true,
+      monthly_cap: 10000,
+      monthly_spent: 0,
+      yearly_enabled: true,
+      yearly_cap: 100000,
+      yearly_spent: 0,
+      per_transaction_enabled: true,
+      per_transaction_cap: 1000,
+      per_transaction_spent: 0
+    },
+    metadata: {}
+  }
+  
   // Функция получения карт пользователя
   const fetchUserCards = async () => {
     try {
@@ -310,10 +359,9 @@ const HomePage: React.FC<HomePageProps> = ({ user, appUser, isNewUser, onCloseMo
 
             if (response.success) {
               console.log('✅ Email успешно обновлен в БД:', response.data)
-              // setIsUserRegistered(true) // Пользователь теперь зарегистрирован
               setIsCodeConfirmationModalOpen(false)
-              // Получаем карты и переходим к пополнению
-              await fetchUserCards()
+              // Сразу переходим к оплате с заглушкой карты
+              setUserCards([mockCard])
               setIsTopUpModalOpen(true)
             } else {
               console.error('❌ Ошибка при обновлении email:', response.error)

@@ -68,7 +68,7 @@ const CodeConfirmationModal: React.FC<CodeConfirmationModalProps> = ({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[40]">
+    <div className="fixed inset-0 z-[130]">
       <div 
         className="absolute inset-0 bg-black bg-opacity-50"
         onClick={onClose}
@@ -128,14 +128,14 @@ const CodeConfirmationModal: React.FC<CodeConfirmationModalProps> = ({
         </div>
         
         {/* Buttons */}
-        <div className="p-6 border-t border-gray-700" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0) + 120px)' }}>
+        <div className="p-6 border-t border-gray-700" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0) + 20px)' }}>
           <button 
             onClick={handleSubmit}
             disabled={code.length !== 6}
             className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed mb-3"
             style={{ height: '54px' }}
           >
-            Подтвердить
+            {code.length === 6 ? 'Подтвердить' : `Подтвердить (${code.length}/6)`}
           </button>
           <button 
             onClick={handleResend}
