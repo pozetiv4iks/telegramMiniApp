@@ -17,7 +17,7 @@ const API_BASE_URL = 'https://backend-tg-livid.vercel.app';
 const API_KEY = 'nnc_0YGtwEeh2oHoLja07rRHNt3NqvmW6jgfg-MliHXY1Q4';
 
 // Заглушка для program_id
-const DEFAULT_PROGRAM_ID = 'bbcaff9a-dfdc-4274-a8e5-b65733b8a4e7';
+const DEFAULT_PROGRAM_ID = 'dbb74408-0318-401c-ac5d-72e522fa8aaa';
 
 // Типы для API ответов
 export interface ApiResponse<T = any> {
