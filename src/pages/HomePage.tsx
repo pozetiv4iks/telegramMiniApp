@@ -1,6 +1,4 @@
 import React, { useState, useCallback } from 'react'
-import { Button } from 'primereact/button'
-import WebApp from '@twa-dev/sdk'
 import ReferralModal from '../components/ReferralModal'
 import CardIssueModal from '../components/CardIssueModal'
 import EmailActivationModal from '../components/EmailActivationModal'
@@ -123,24 +121,6 @@ const HomePage: React.FC<HomePageProps> = ({ user, appUser, isNewUser, onCloseMo
   }, [])
   
 
-  // Функция для тестирования Telegram WebApp API
-  const testTelegramAPI = () => {
-    try {
-      const userInfo = WebApp.initDataUnsafe?.user
-      const platform = WebApp.platform
-      const version = WebApp.version
-      const theme = WebApp.colorScheme
-      
-      console.log(`Telegram WebApp Info:
-Пользователь: ${userInfo ? `${userInfo.first_name} ${userInfo.last_name || ''}` : 'Не определен'}
-Платформа: ${platform}
-Версия: ${version}
-Тема: ${theme}
-Готов: ${WebApp.isExpanded ? 'Да' : 'Нет'}`)
-    } catch (error) {
-      console.error('Ошибка при получении данных Telegram WebApp: ' + error)
-    }
-  }
 
   return (
     <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: '#111827' }}>
@@ -264,27 +244,6 @@ const HomePage: React.FC<HomePageProps> = ({ user, appUser, isNewUser, onCloseMo
             </button>
           )}
 
-          {/* Тестовые кнопки */}
-          <div className="mt-6 flex gap-2 justify-center">
-            <Button 
-              label="Telegram API"
-              icon="pi pi-telegram"
-              onClick={testTelegramAPI}
-              className="p-button-sm p-button-outlined p-button-secondary"
-            />
-            <Button 
-              label="Загрузить карты"
-              icon="pi pi-credit-card"
-              onClick={fetchUserCards}
-              className="p-button-sm p-button-secondary"
-            />
-            <Button 
-              label="Тест"
-              icon="pi pi-check"
-              onClick={() => console.log('Кнопка работает!')}
-              className="p-button-sm p-button-secondary"
-            />
-          </div>
         </div>
       </div>
 
