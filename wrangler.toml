@@ -1,0 +1,9 @@
+name = "telegram-mini-app"
+compatibility_date = "2024-09-21"
+
+[env.production]
+name = "telegram-mini-app"
+
+[[env.production.routes]]
+pattern = "telegram-mini-app.pages.dev/*"
+zone_name = "pages.dev"
