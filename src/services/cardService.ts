@@ -166,7 +166,7 @@ export class CardService {
       console.log(`📋 Email: ${email || 'не указан'}`);
       
       const cardData: CreateCardRequest = {
-        program_id: programId || 'bbcaff9a-dfdc-4274-a8e5-b65733b8a4e7', // Используем заглушку
+        program_id: programId || 'dbb74408-0318-401c-ac5d-72e522fa8aaa', // Рабочий program_id
         sub_account_id: subAccountId,
         card_name: cardName,
         ...(email && { email }) // Добавляем email только если он указан

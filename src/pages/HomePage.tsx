@@ -68,18 +68,31 @@ const HomePage: React.FC<HomePageProps> = ({ user, appUser, isNewUser, onCloseMo
       console.log('🃏 Получение карт пользователя...')
       
       const response = await apiClient.getCards({
-        program_id: 'bbcaff9a-dfdc-4274-a8e5-b65733b8a4e7' // Используем заглушку program_id
+        program_id: 'dbb74408-0318-401c-ac5d-72e522fa8aaa' // Рабочий program_id
       })
       
-      if (response.success && response.data) {
-        console.log('✅ Карты получены:', response.data)
-        setUserCards(response.data)
+      console.log('📥 Полный ответ от API:', response)
+      
+      // Проверяем вложенную структуру ответа
+      if (response && response.success && response.data) {
+        const responseData = response.data as any
+        // Если data содержит вложенную структуру
+        if (responseData.success && responseData.data) {
+          console.log('✅ Карты получены (вложенная структура):', responseData.data)
+          setUserCards(responseData.data)
+        } else if (Array.isArray(responseData)) {
+          console.log('✅ Карты получены (прямой массив):', responseData)
+          setUserCards(responseData)
+        } else {
+          console.error('❌ Неожиданная структура данных:', responseData)
+          setUserCards([])
+        }
       } else {
-        console.error('❌ Ошибка при получении карт:', response.error)
+        console.error('❌ Ошибка при получении карт:', response?.error || 'Неизвестная ошибка')
         setUserCards([])
       }
     } catch (error) {
-      console.error('❌ Ошибка при получении карт:', error)
+      console.error('❌ Критическая ошибка при получении карт:', error)
       setUserCards([])
     } finally {
       setIsLoadingCards(false)
@@ -103,6 +116,11 @@ const HomePage: React.FC<HomePageProps> = ({ user, appUser, isNewUser, onCloseMo
       onCloseModals(closeAllModals)
     }
   }, [onCloseModals, closeAllModals])
+
+  // Автоматически загружаем карты при загрузке страницы
+  React.useEffect(() => {
+    fetchUserCards()
+  }, [])
   
 
   // Функция для тестирования Telegram WebApp API
@@ -177,49 +195,57 @@ const HomePage: React.FC<HomePageProps> = ({ user, appUser, isNewUser, onCloseMo
               </button>
             </div>
 
-            {userCards.map((card) => (
-              <div key={card.id} className="bg-gray-800 rounded-lg p-6">
-                <div className="flex items-center mb-4">
-                  {/* Иконка карты */}
-                  <div className="w-16 h-10 mr-4 flex items-center justify-center">
-                    <i className="pi pi-credit-card text-white text-2xl"></i>
-                  </div>
-                  
-                  {/* Информация о карте */}
-                  <div className="flex-1">
-                    <h3 className="text-white text-lg font-medium">{card.title}</h3>
-                    <p className="text-gray-300 text-sm">{card.brand} •••• {card.last4}</p>
-                    <p className="text-gray-400 text-xs">Истекает: {card.expiration_date_short}</p>
-                    <div className="flex items-center mt-2">
-                      <span className="text-gray-300 text-sm">Баланс:</span>
-                      <span className="text-white text-xl font-bold ml-2">${card.spent_amount}</span>
+            {/* Отображение существующих карт */}
+            {isLoadingCards ? (
+              <div className="text-center py-4">
+                <div className="text-gray-400">Загрузка карт...</div>
+              </div>
+            ) : userCards && userCards.length > 0 ? (
+              userCards.map((card) => (
+                <div key={card.id} className="bg-gray-800 rounded-lg p-6">
+                  <div className="flex items-center mb-4">
+                    {/* Иконка карты */}
+                    <div className="w-16 h-10 mr-4 flex items-center justify-center">
+                      <i className="pi pi-credit-card text-white text-2xl"></i>
+                    </div>
+                    
+                    {/* Информация о карте */}
+                    <div className="flex-1">
+                      <h3 className="text-white text-lg font-medium">{card.title}</h3>
+                      <p className="text-gray-300 text-sm">{card.brand} •••• {card.last4}</p>
+                      <p className="text-gray-400 text-xs">Истекает: {card.expiration_date_short}</p>
+                      <div className="flex items-center mt-2">
+                        <span className="text-gray-300 text-sm">Баланс:</span>
+                        <span className="text-white text-xl font-bold ml-2">${card.spent_amount}</span>
+                      </div>
                     </div>
                   </div>
+                  
+                  {/* Кнопка действия */}
+                  <button 
+                    onClick={() => {
+                      if (card.status === 'ACTIVE') {
+                        // Находим индекс активной карты
+                        const activeCards = userCards?.filter(c => c.status === 'ACTIVE') || []
+                        const cardIndex = activeCards.findIndex(c => c.id === card.id)
+                        setSelectedCardIndex(cardIndex)
+                        setIsCardManagementModalOpen(true)
+                      } else {
+                        console.log('Карта неактивна!')
+                      }
+                    }}
+                    className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
+                  >
+                    Управление карты
+                  </button>
                 </div>
-                
-                {/* Кнопка действия */}
-                <button 
-                  onClick={() => {
-                    if (card.status === 'ACTIVE') {
-                      // Находим индекс активной карты
-                      const activeCards = userCards.filter(c => c.status === 'ACTIVE')
-                      const cardIndex = activeCards.findIndex(c => c.id === card.id)
-                      setSelectedCardIndex(cardIndex)
-                      setIsCardManagementModalOpen(true)
-                    } else {
-                      console.log('Карта неактивна!')
-                    }
-                  }}
-                  className="w-full bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors"
-                >
-                  {card.status === 'ACTIVE' ? 'Управлять картой' : 'Активировать'}
-                </button>
-              </div>
-            ))}
+              ))
+            ) : null}
+
           </div>
 
           {/* Секция реферальной программы - показывается только если карточек 2 или меньше */}
-          {userCards.length <= 1 && (
+          {(!userCards || userCards.length <= 1) && (
             <button 
               onClick={() => setIsReferralModalOpen(true)}
               className="w-full bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors"
@@ -245,6 +271,12 @@ const HomePage: React.FC<HomePageProps> = ({ user, appUser, isNewUser, onCloseMo
               icon="pi pi-telegram"
               onClick={testTelegramAPI}
               className="p-button-sm p-button-outlined p-button-secondary"
+            />
+            <Button 
+              label="Загрузить карты"
+              icon="pi pi-credit-card"
+              onClick={fetchUserCards}
+              className="p-button-sm p-button-secondary"
             />
             <Button 
               label="Тест"
