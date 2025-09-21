@@ -65,7 +65,7 @@ const TopUpModal: React.FC<TopUpModalProps> = ({ isOpen, onClose, onPay, cards =
               </div>
             ) : cards.length > 0 ? (
               <div className="space-y-3">
-                {cards.map((card, index) => (
+                {cards.map((card) => (
                   <div key={card.id} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
                     <div className="flex items-center justify-between">
                       <div>

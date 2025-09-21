@@ -72,7 +72,7 @@ export class UserService {
 
           // Шаг 3: Добавляем пользователя в БД
           console.log('📝 Шаг 3: Добавляем пользователя в БД...');
-          const newUserData = await this.createUserDataInDB(telegramId, subAccount.id, telegramData);
+          const newUserData = await this.createUserDataInDB(telegramId, subAccount.id);
           
           if (newUserData) {
             userData = newUserData;
@@ -158,8 +158,7 @@ export class UserService {
    */
   private async createUserDataInDB(
     telegramId: string, 
-    subAccountId: string, 
-    telegramData?: TelegramUserData
+    subAccountId: string
   ): Promise<UserData | null> {
     try {
       console.log('💾 Создаем пользователя в БД...');

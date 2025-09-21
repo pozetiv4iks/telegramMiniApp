@@ -19,7 +19,7 @@ interface HistoryPageProps {
 }
 
 
-const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, appUser, currentPage, setCurrentPage }) => {
+const HistoryPage: React.FC<HistoryPageProps> = ({ user: _user, currentPage, setCurrentPage }) => {
   const [activeFilter, setActiveFilter] = useState('all')
   const [showOperationFilter, setShowOperationFilter] = useState(false)
   const [selectedOperation, setSelectedOperation] = useState('all')

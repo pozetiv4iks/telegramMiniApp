@@ -178,7 +178,6 @@ export class SubAccountService {
       console.log(`💼 Wallet ID: ${wallet_id}`);
       
       const subAccount = await this.createSubAccount({
-        wallet_id: wallet_id
         // program_id будет взят из заглушки автоматически
       });
       

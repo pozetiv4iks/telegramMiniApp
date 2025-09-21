@@ -36,7 +36,6 @@ function App() {
         WebApp.setBackgroundColor('#111827')
 
         let tgUserData = null;
-        let nickName = '';
         let telegramId = '';
 
         // Получение данных пользователя из Telegram
@@ -51,14 +50,12 @@ function App() {
           }
           
           setUser(tgUserData)
-          nickName = tgUser.username || `user_${tgUser.id}`
           telegramId = tgUser.id.toString()
           
           console.log('Telegram user data loaded:', tgUser)
         } else {
           console.log('Using mock user data (Telegram WebApp not available)')
           tgUserData = mockUser
-          nickName = mockUser.username || `user_${mockUser.id}`
           telegramId = mockUser.id.toString()
         }
 
@@ -132,11 +129,6 @@ function App() {
 
   // Функция для рендера текущей страницы
   const renderCurrentPage = () => {
-    const userData = {
-      telegramUser: user,
-      appUser: appUser,
-      isNewUser: isNewUser
-    }
 
     switch (currentPage) {
       case 'home':

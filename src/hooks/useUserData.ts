@@ -1,12 +1,11 @@
 import { useState, useCallback } from 'react';
+import { apiClient, ApiResponse } from '../services/api';
 import { 
-  apiClient, 
-  ApiResponse,
   UserData, 
   CreateUserDataRequest, 
   UpdateUserDataRequest, 
   UserDataQueryParams
-} from '../services/api';
+} from '../types/userData';
 
 // Базовый хук для работы с пользовательскими данными
 export function useUserData() {
