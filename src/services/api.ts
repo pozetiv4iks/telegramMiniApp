@@ -13,7 +13,7 @@ import {
   UserDataQueryParams
 } from '../types/userData';
 
-const API_BASE_URL = 'https://backend-tg-five.vercel.app/api';
+const API_BASE_URL = 'https://backend-tg-livid.vercel.app';
 const API_KEY = 'nnc_0YGtwEeh2oHoLja07rRHNt3NqvmW6jgfg-MliHXY1Q4';
 
 // Заглушка для program_id
