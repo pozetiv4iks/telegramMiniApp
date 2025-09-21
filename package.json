@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Telegram Mini App built with React and TypeScript",
+  "packageManager": "yarn@4.9.1",
   "engines": {
     "node": ">=20.19.0",
-    "npm": ">=10.0.0"
+    "yarn": ">=4.0.0"
   },
   "scripts": {
     "dev": "vite",
